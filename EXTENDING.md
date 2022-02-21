@@ -54,6 +54,7 @@ public enum MinigameType {
     - If you want to implement events, such as `onGameStart` which gets called when your game starts, you can implement the `GameEventListener` interface and add the required methods to your class. To register your class as a listener, simply call `super.addGameEventListeners(this);`.
 
     ### Example:
+    
 ```java
 public class MyMinigame extends Minigame implements GameEventListener {
 
