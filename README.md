@@ -1,0 +1,2 @@
+# MinecraftParty
+Minecraft Party minigame
