@@ -1,7 +1,8 @@
-package me.timwastaken.minecraftparty.models;
+package me.timwastaken.minecraftparty.models.templates;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.managers.GameManager;
+import me.timwastaken.minecraftparty.models.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
 import org.bukkit.scheduler.BukkitRunnable;

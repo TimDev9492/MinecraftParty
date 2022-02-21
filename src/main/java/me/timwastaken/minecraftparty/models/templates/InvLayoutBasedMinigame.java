@@ -1,4 +1,4 @@
-package me.timwastaken.minecraftparty.models;
+package me.timwastaken.minecraftparty.models.templates;
 
 import me.timwastaken.minecraftparty.managers.DatabaseManager;
 import me.timwastaken.minecraftparty.models.enums.ItemType;

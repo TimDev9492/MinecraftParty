@@ -2,7 +2,7 @@ package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.models.GameEventListener;
-import me.timwastaken.minecraftparty.models.InvLayoutBasedMinigame;
+import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.enums.ItemType;
 import org.bukkit.*;

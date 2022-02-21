@@ -7,7 +7,7 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.models.GameEventListener;
-import me.timwastaken.minecraftparty.models.Minigame;
+import me.timwastaken.minecraftparty.models.templates.Minigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
