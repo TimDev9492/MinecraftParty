@@ -12,9 +12,9 @@ If you want to add your own minigame to the plugin, you have to follow these ste
    
    - `origin` - This holds the x, y, and z coordinate for the player spawn. Players get teleported to this location when your minigame starts
    - `world_name` - The name of your world directory. Specify the value from `default_world.name` to use the default world.
-   - `reward` - This value represents the reward factor associated with your game (Not implemented yet). Specify any number for the time being.
+   - `reward` - This value represents the reward factor associated with your game (not implemented yet). Specify any number for the time being.
 
-### Example section:
+### Example:
 
 ```yml
 # ...
@@ -27,6 +27,7 @@ minigames:
       y: 65
       z: 0
     world_name: my_plugin_world
+    # add more values here
 ```
 
 
