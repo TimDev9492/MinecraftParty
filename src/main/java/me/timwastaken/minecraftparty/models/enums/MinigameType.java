@@ -1,9 +1,7 @@
-package me.timwastaken.minecraftparty.models;
+package me.timwastaken.minecraftparty.models.enums;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;

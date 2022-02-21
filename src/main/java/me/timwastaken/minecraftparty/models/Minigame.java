@@ -2,6 +2,7 @@ package me.timwastaken.minecraftparty.models;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.managers.GameManager;
+import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
 import org.bukkit.scheduler.BukkitRunnable;
 

@@ -2,7 +2,7 @@ package me.timwastaken.minecraftparty.managers;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.models.Minigame;
-import me.timwastaken.minecraftparty.models.MinigameType;
+import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.minigames.AnvilStorm;
 import me.timwastaken.minecraftparty.models.minigames.JourneyToSalem;
 import me.timwastaken.minecraftparty.models.minigames.MlgRush;

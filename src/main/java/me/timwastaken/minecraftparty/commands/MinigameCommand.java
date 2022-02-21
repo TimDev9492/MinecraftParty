@@ -1,7 +1,7 @@
 package me.timwastaken.minecraftparty.commands;
 
 import me.timwastaken.minecraftparty.managers.GameManager;
-import me.timwastaken.minecraftparty.models.MinigameType;
+import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

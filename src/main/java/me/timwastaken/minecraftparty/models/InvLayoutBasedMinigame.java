@@ -2,6 +2,7 @@ package me.timwastaken.minecraftparty.models;
 
 import me.timwastaken.minecraftparty.managers.DatabaseManager;
 import me.timwastaken.minecraftparty.models.enums.ItemType;
+import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

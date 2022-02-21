@@ -7,7 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.UpdateResult;
 import me.timwastaken.minecraftparty.MinecraftParty;
-import me.timwastaken.minecraftparty.models.MinigameType;
+import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.enums.ItemType;
 import org.bson.Document;
 

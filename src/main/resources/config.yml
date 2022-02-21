@@ -1,6 +1,6 @@
 database:
   username: plugin_user
-  password: pSef83r7e2W36p5uQhOKawRKK3z35pkn
+  password: no_pw_needed
   hostname: localhost
   port: 27017
 default_world:
