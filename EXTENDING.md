@@ -2,7 +2,7 @@
 
 If you want to add your own minigame to the plugin, you have to follow these steps:
 
----
+
 
 ## 1. Add to the plugin.yml
 
@@ -29,7 +29,7 @@ minigames:
     world_name: my_plugin_world
 ```
 
----
+
 
 ## 2. Add your plugin to the `MinigameType` enum
 
@@ -46,7 +46,7 @@ public enum MinigameType {
     // ...
 }
 ```
----
+
 ## 3. Add your minigame class
 
     - Create your java class containing the code of your minigame in `me.timwastaken.minecraftparty.models.minigames` and make it extend one of the classes from `me.timwastaken.minecraftparty.models.templates`
