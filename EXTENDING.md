@@ -53,7 +53,7 @@ public enum MinigameType {
    - Each minigame class has a field `type` which is the `MinigameType` enum value corresponding to your minigame. This type gets passed on to the super class and is important for loading basic attributes, such as the world that you specified.
    - If you want to implement events, such as `onGameStart` which gets called when your game starts, you can implement the `GameEventListener` interface and add the required methods to your class. To register your class as a listener, simply call `super.addGameEventListeners(this);`.
 
-    ### Example:
+### Example:
     
 ```java
 public class MyMinigame extends Minigame implements GameEventListener {
