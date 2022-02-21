@@ -62,6 +62,7 @@ public class MyMinigame extends Minigame implements GameEventListener {
 
     public MyMinigame() {
         super(type);
+        super.addGameEventListeners(this); // required for your events to work
     }
 
     @Override
