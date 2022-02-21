@@ -80,7 +80,7 @@ public class MyMinigame extends Minigame implements GameEventListener {
     public void onWorldLoaded() {
         // gets executed as soon as your world is loaded
         
-        // use this to load config options that influence the behavior of your plugin
+        // use this to load desired config options that influence the behavior of your plugin
         // example below:
         ConfigurationSection section = MinecraftParty.getInstance().getConfig().getConfigurationSection("minigames." + type.getAlias());
         int value1 = section.getInt("value1"); // must exist in plugin.yml under minigames.your_plugin_alias
