@@ -1,0 +1,75 @@
+database:
+  username: plugin_user
+  password: pSef83r7e2W36p5uQhOKawRKK3z35pkn
+  hostname: localhost
+  port: 27017
+default_world:
+  name: world
+  origin:
+    x: 0
+    y: 65
+    z: 0
+minigames:
+  anvil_storm:
+    reward: 1
+    origin:
+      x: 0
+      y: 65
+      z: 0
+    delta: 10
+    fall_height: 20
+    anvils_per_second: 1
+    world_name: world
+  mlg_rush:
+    reward: 1
+    origin:
+      x: 0
+      y: 65
+      z: 0
+    world_name: mlg_rush
+    spawn1:
+      x: -15
+      y: 69
+      z: 0
+      yaw: -90
+    spawn2:
+      x: 15
+      y: 69
+      z: 0
+      yaw: 90
+    bed1:
+      x: -15
+      y: 65
+      z: 0
+    bed2:
+      x: 15
+      y: 65
+      z: 0
+    spectator_spawn:
+      x: 0
+      y: 100
+      z: 0
+      pitch: 90
+      yaw: 0
+    lives: 2
+    reset_depth: 8
+    bed_protection_radius: 2.5
+    build_height: 4
+    block_material: SMOOTH_BASALT
+    weapon_material: STICK
+    tool_material: WOODEN_PICKAXE
+    bed_material: MAGENTA_BED
+  journey_to_salem:
+    world_name: world
+    reward: 1
+    origin:
+      x: 0
+      y: 65
+      z: 0
+    nbs_directory: /home/tim/minecraft/mcparty/var/nbs
+    song_buffer_size: 10
+    min_ticks: 160
+    max_ticks: 320
+    ticks_between: 160
+    exponential_cab: 8
+    spawn_radius: 22

@@ -1,0 +1,16 @@
+name: MinecraftParty
+version: '${project.version}'
+main: me.timwastaken.minecraftparty.MinecraftParty
+api-version: 1.18
+authors: [ TimWasTaken ]
+description: Minecraft Party gamemode (mix of cytooxien mario party and itsjerryandharry herobrines chamber)
+depend: [ NoteBlockAPI ]
+commands:
+  minigame:
+    description: Loads the specified minigame
+    usage: minigame <load|stop> <minigame_type>
+    aliases:
+      - loadgame
+      - game
+      - load
+      - mg
