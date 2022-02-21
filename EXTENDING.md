@@ -49,9 +49,9 @@ public enum MinigameType {
 
 ## 3. Add your minigame class
 
-    - Create your java class containing the code of your minigame in `me.timwastaken.minecraftparty.models.minigames` and make it extend one of the classes from `me.timwastaken.minecraftparty.models.templates`
-    - Each minigame class has a field `type` which is the `MinigameType` enum value corresponding to your minigame. This type gets passed on to the super class and is important for loading basic attributes, such as the world that you specified.
-    - If you want to implement events, such as `onGameStart` which gets called when your game starts, you can implement the `GameEventListener` interface and add the required methods to your class. To register your class as a listener, simply call `super.addGameEventListeners(this);`.
+   - Create your java class containing the code of your minigame in `me.timwastaken.minecraftparty.models.minigames` and make it extend one of the classes from `me.timwastaken.minecraftparty.models.templates`
+   - Each minigame class has a field `type` which is the `MinigameType` enum value corresponding to your minigame. This type gets passed on to the super class and is important for loading basic attributes, such as the world that you specified.
+   - If you want to implement events, such as `onGameStart` which gets called when your game starts, you can implement the `GameEventListener` interface and add the required methods to your class. To register your class as a listener, simply call `super.addGameEventListeners(this);`.
 
     ### Example:
     
@@ -93,6 +93,5 @@ public class MyMinigame extends Minigame implements GameEventListener {
 
 }
 ```
----
 **To test out your minigame, you can use the command `/mg load your_plugin_alias` on a suitable server.**
 
