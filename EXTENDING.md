@@ -4,9 +4,9 @@ If you want to add your own minigame to the plugin, you have to follow these ste
 
 
 
-## 1. Add to the plugin.yml
+## 1. Add to the config.yml
 
-   The `plugin.yml` file contains attributes about your minigame that get read by the plugin on start. Add your values to the `minigames` list.
+   The `config.yml` file contains attributes about your minigame that get read by the plugin on start. Add your values to the `minigames` list.
    
    Required values are:
    
@@ -83,7 +83,7 @@ public class MyMinigame extends Minigame implements GameEventListener {
         // use this to load desired config options that influence the behavior of your plugin
         // example below:
         ConfigurationSection section = MinecraftParty.getInstance().getConfig().getConfigurationSection("minigames." + type.getAlias());
-        int value1 = section.getInt("value1"); // must exist in plugin.yml under minigames.your_plugin_alias
+        int value1 = section.getInt("value1"); // must exist in config.yml under minigames.your_plugin_alias
         String str1 = section.getString("str1");
         // ...
     }
