@@ -80,5 +80,9 @@ minigames:
     reward: 1
     origin:
       x: 0
-      y: 65
+      y: 69
       z: 0
+    gun_material: NETHERITE_PICKAXE
+    spawn_delta: 19
+    hit_damage: 8
+    shot_delay_ticks: 60

@@ -45,7 +45,10 @@ public abstract class Minigame {
             gameWorld.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         }
         origin = type.getOrigin().toLocation(gameWorld);
-        Bukkit.getOnlinePlayers().forEach(p -> p.teleport(origin));
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            p.teleport(origin);
+            p.getInventory().clear();
+        });
         gameEventListeners.forEach(GameEventListener::onWorldLoaded);
     }
 
