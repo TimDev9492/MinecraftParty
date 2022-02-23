@@ -95,5 +95,28 @@ public class MyMinigame extends Minigame implements GameEventListener {
 
 }
 ```
+
+## 4. Register your minigame in the `GameManager` class
+
+   - Add a branch to the switch statement for your `MinigameType` enum value. The switch statement is in the `me.timwastaken.minecraftparty.managers.GameManager` class (method `loadMinigame`). The code inside this branch stores the `activeMinigame` field for the GameManager. Store a new instance of your minigame into this field.
+
+### Example:
+    
+```java
+public static void loadMinigame(MinigameType type, Player... players) {
+        boolean successful = true;
+        switch (type) {
+            // ...
+            case MY_MINIGAME -> {
+                activeMinigame = new MyMinigame(); // instantiate your minigame here and store it in the activeMinigame field
+            }
+            default -> successful = false;
+        }
+        if (successful) {
+            activeMinigame.loadWorld();
+            activeMinigame.startCountdown();
+        }
+    }
+```
 **To test out your minigame, you can use the command `/mg load your_plugin_alias` on a suitable server.**
 
