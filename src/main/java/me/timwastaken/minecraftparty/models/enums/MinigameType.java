@@ -16,7 +16,8 @@ public enum MinigameType {
 
     ANVIL_STORM(ChatColor.GOLD + "" + ChatColor.BOLD + "Anvil Storm", "anvil_storm"),
     MLG_RUSH(ChatColor.GOLD + "" + ChatColor.BOLD + "MLG Rush", "mlg_rush"),
-    JOURNEY_TO_SALEM(ChatColor.GOLD + "" + ChatColor.BOLD + "Journey to salem", "journey_to_salem");
+    MUSICAL_CHAIRS(ChatColor.GOLD + "" + ChatColor.BOLD + "Musical Chairs", "musical_chairs"),
+    LASERTAG(ChatColor.GOLD + "" + ChatColor.BOLD + "Lasertag", "lasertag");
 
     private final String displayName;
     private final String alias;

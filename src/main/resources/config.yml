@@ -1,3 +1,6 @@
+music:
+  nbs_directory: /home/tim/minecraft/mcparty/var/nbs
+  exclude: [ ]
 database:
   username: plugin_user
   password: no_pw_needed
@@ -59,17 +62,23 @@ minigames:
     weapon_material: STICK
     tool_material: WOODEN_PICKAXE
     bed_material: MAGENTA_BED
-  journey_to_salem:
+  musical_chairs:
     world_name: world
     reward: 1
     origin:
       x: 0
       y: 65
       z: 0
-    nbs_directory: /home/tim/minecraft/mcparty/var/nbs
     song_buffer_size: 10
     min_ticks: 160
     max_ticks: 320
     ticks_between: 160
     exponential_cab: 8
     spawn_radius: 22
+  lasertag:
+    world_name: lasertag
+    reward: 1
+    origin:
+      x: 0
+      y: 65
+      z: 0

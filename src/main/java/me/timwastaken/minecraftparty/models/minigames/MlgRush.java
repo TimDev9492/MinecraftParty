@@ -1,7 +1,8 @@
 package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
-import me.timwastaken.minecraftparty.models.GameEventListener;
+import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
+import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.enums.ItemType;
@@ -43,7 +44,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
     private Material bedMaterial;
 
     public MlgRush(Player... players) {
-        super(type, players);
+        super(type, List.of(MinigameFlag.ZERO_DAMAGE), players);
         super.addGameEventListeners(this);
         this.players = players;
         rnd = new Random();
@@ -161,6 +162,14 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
 
     @Override
     public void onPlayerLeave(Player p) {
+        Player other = currentlyFighting[0] == p.getUniqueId() ? Bukkit.getPlayer(currentlyFighting[1]) : Bukkit.getPlayer(currentlyFighting[0]);
+        if (other == null) return;
+        if (isFighting(p)) {
+            updateInvLayout(other);
+            updateInvLayout(p);
+            resetMap();
+            generateNewFightingPlayers();
+        }
         gamesPlayed.remove(p.getUniqueId());
     }
 
@@ -183,12 +192,12 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         if (bed.getLocation().distanceSquared(getSpawn(winner)) < bed.getLocation().distanceSquared(getSpawn(looser))) {
             return;
         }
-        winner.playSound(winner.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
-        looser.playSound(looser.getLocation(), Sound.ENTITY_CAT_HISS, 1f, 1f);
         updateInvLayout(winner);
         updateInvLayout(looser);
         makeSpectator(winner);
         makeSpectator(looser);
+        winner.playSound(winner.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
+        looser.playSound(looser.getLocation(), Sound.ENTITY_CAT_HISS, 1f, 1f);
         removeLife(looser.getUniqueId());
         resetMap();
         if (gamesPlayed.keySet().size() > 1) generateNewFightingPlayers();

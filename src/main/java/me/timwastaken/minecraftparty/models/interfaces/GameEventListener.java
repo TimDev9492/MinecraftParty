@@ -1,4 +1,4 @@
-package me.timwastaken.minecraftparty.models;
+package me.timwastaken.minecraftparty.models.interfaces;
 
 import org.bukkit.entity.Player;
 

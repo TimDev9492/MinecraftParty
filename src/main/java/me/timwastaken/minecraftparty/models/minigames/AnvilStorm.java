@@ -1,7 +1,8 @@
 package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
-import me.timwastaken.minecraftparty.models.GameEventListener;
+import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
+import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
@@ -11,10 +12,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class AnvilStorm extends Minigame implements GameEventListener {
 
@@ -28,7 +26,7 @@ public class AnvilStorm extends Minigame implements GameEventListener {
     private final double anvilStartRate;
 
     public AnvilStorm(Player... players) {
-        super(type);
+        super(type, List.of(MinigameFlag.NO_PVP, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT));
         super.addGameEventListeners(this);
 
         gameLoops = new ArrayList<>();

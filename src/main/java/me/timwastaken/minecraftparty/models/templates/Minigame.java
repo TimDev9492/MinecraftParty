@@ -2,7 +2,8 @@ package me.timwastaken.minecraftparty.models.templates;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.managers.GameManager;
-import me.timwastaken.minecraftparty.models.GameEventListener;
+import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
+import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -13,6 +14,7 @@ import java.util.List;
 public abstract class Minigame {
 
     protected MinigameType type;
+    protected List<MinigameFlag> flags;
     private final String gameWorldName;
     protected World gameWorld;
     private long whenStarted;
@@ -21,8 +23,9 @@ public abstract class Minigame {
 
     private final ArrayList<GameEventListener> gameEventListeners;
 
-    public Minigame(MinigameType type) {
+    public Minigame(MinigameType type, List<MinigameFlag> flags) {
         this.type = type;
+        this.flags = flags;
         this.gameEventListeners = new ArrayList<>();
         this.gameWorldName = type.getWorldName();
     }
@@ -42,6 +45,7 @@ public abstract class Minigame {
             gameWorld.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         }
         origin = type.getOrigin().toLocation(gameWorld);
+        Bukkit.getOnlinePlayers().forEach(p -> p.teleport(origin));
         gameEventListeners.forEach(GameEventListener::onWorldLoaded);
     }
 
@@ -105,6 +109,10 @@ public abstract class Minigame {
             p.getInventory().clear();
         });
         unloadWorld();
+    }
+
+    public boolean hasFlag(MinigameFlag flag) {
+        return flags != null && flags.contains(flag);
     }
 
     public String getDisplayName() {

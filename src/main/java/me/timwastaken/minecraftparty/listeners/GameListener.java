@@ -1,9 +1,10 @@
 package me.timwastaken.minecraftparty.listeners;
 
 import me.timwastaken.minecraftparty.managers.GameManager;
-import me.timwastaken.minecraftparty.models.GameEventListener;
+import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
+import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.minigames.AnvilStorm;
-import me.timwastaken.minecraftparty.models.minigames.JourneyToSalem;
+import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
 import me.timwastaken.minecraftparty.models.minigames.MlgRush;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -35,14 +36,18 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerTakeDamage(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player && GameManager.getActiveMinigame() instanceof MlgRush) {
-            event.setDamage(0);
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_DAMAGE)) event.setCancelled(true);
+        else if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.ZERO_DAMAGE)) event.setDamage(0);
+        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_FALL_DAMAGE)) event.setCancelled(true);
+            else if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.ZERO_FALL_DAMAGE)) event.setDamage(0);
         }
     }
 
     @EventHandler
-    public void onPlayerPlaceBlock(BlockPlaceEvent event) {
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_BLOCK_PLACEMENT)) event.setCancelled(true);
         if (GameManager.getActiveMinigame() instanceof MlgRush mlgRushMinigame) {
             if (event.getBlockPlaced().getLocation().getBlockY() > mlgRushMinigame.getBuildHeight() || mlgRushMinigame.isNearOwnBed(event.getPlayer(), event.getBlock())) {
                 event.setCancelled(true);
@@ -53,7 +58,8 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerBreakBlock(BlockBreakEvent event) {
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_BLOCK_BREAKING)) event.setCancelled(true);
         if (GameManager.getActiveMinigame() instanceof MlgRush mlgRushMinigame) {
             if (event.getBlock().getType() == mlgRushMinigame.getBedMaterial()) {
                 event.setCancelled(true);
@@ -65,12 +71,12 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerClickBed(PlayerBedEnterEvent event) {
+    public void onPlayerBedEnter(PlayerBedEnterEvent event) {
         if (GameManager.getActiveMinigame() instanceof MlgRush) event.setCancelled(true);
     }
 
     @EventHandler
-    public void onPlayerMoveEvent(PlayerMoveEvent event) {
+    public void onPlayerMove(PlayerMoveEvent event) {
         if (GameManager.getActiveMinigame() instanceof MlgRush mlgRushMinigame) {
             if (mlgRushMinigame.isFighting(event.getPlayer()) && event.getTo().getBlockY() <= mlgRushMinigame.getDeathY()) {
                 mlgRushMinigame.teleportBack(event.getPlayer(), true);
@@ -79,7 +85,15 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onAnvilHitPlayer(EntityDamageByEntityEvent event) {
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player) {
+            if (event.getEntity() instanceof Player) {
+                if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_PVP)) event.setCancelled(true);
+                else if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.ZERO_PVP_DAMAGE)) event.setDamage(0);
+            } else {
+                if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_PVE)) event.setCancelled(true);
+            }
+        }
         if (GameManager.getActiveMinigame() instanceof AnvilStorm anvilStormMinigame) {
             if (event.getEntity() instanceof Player p && event.getDamager() instanceof FallingBlock fallingBlock) {
                 if (fallingBlock.getBlockData().getMaterial() == Material.ANVIL) {
@@ -91,7 +105,7 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onAnvilLanded(EntityChangeBlockEvent event) {
+    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         if (GameManager.getActiveMinigame() instanceof AnvilStorm) {
             if (Arrays.asList(
                     Material.ANVIL,
@@ -107,9 +121,9 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerEnterMinecart(VehicleEnterEvent event) {
-        if (GameManager.getActiveMinigame() instanceof JourneyToSalem journeyToSalemMinigame && event.getEntered() instanceof Player p && event.getVehicle() instanceof Minecart) {
-            journeyToSalemMinigame.onPlayerEnterMinecart(p);
+    public void onVehicleEnter(VehicleEnterEvent event) {
+        if (GameManager.getActiveMinigame() instanceof MusicalChairs musicalChairsMinigame && event.getEntered() instanceof Player p && event.getVehicle() instanceof Minecart) {
+            musicalChairsMinigame.onPlayerEnterMinecart(p);
         }
     }
 
@@ -121,7 +135,7 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) {
         if (GameManager.getActiveMinigame() != null)
             ((GameEventListener) GameManager.getActiveMinigame()).onPlayerLeave(event.getPlayer());
     }

@@ -6,9 +6,11 @@ import com.xxmicloxx.NoteBlockAPI.model.playmode.MonoMode;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import me.timwastaken.minecraftparty.MinecraftParty;
-import me.timwastaken.minecraftparty.models.GameEventListener;
-import me.timwastaken.minecraftparty.models.templates.Minigame;
+import me.timwastaken.minecraftparty.managers.MusicManager;
+import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
+import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
+import me.timwastaken.minecraftparty.models.templates.MusicalMinigame;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -21,12 +23,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 import java.util.*;
 
-public class JourneyToSalem extends Minigame implements GameEventListener {
+public class MusicalChairs extends MusicalMinigame implements GameEventListener {
 
     // disable player hitting
     // disable minecart hitting
 
-    private static final MinigameType type = MinigameType.JOURNEY_TO_SALEM;
+    private static final MinigameType type = MinigameType.MUSICAL_CHAIRS;
     private final ArrayList<BukkitRunnable> gameLoops;
 
     private String nbsDirectoryPath;
@@ -36,7 +38,7 @@ public class JourneyToSalem extends Minigame implements GameEventListener {
     private int ticksBetween;
     private int exponentialCab;
     private int spawnRadius;
-    private ArrayList<File> filesLeft;
+    private List<File> filesLeft;
     private ArrayList<Minecart> existingMinecarts;
 
     private final ArrayList<UUID> ingamePlayers;
@@ -44,8 +46,8 @@ public class JourneyToSalem extends Minigame implements GameEventListener {
     private final Random rnd;
     private RadioSongPlayer radio;
 
-    public JourneyToSalem(Player... players) {
-        super(type);
+    public MusicalChairs(Player... players) {
+        super(type, List.of(MinigameFlag.NO_PVP, MinigameFlag.NO_DAMAGE, MinigameFlag.NO_PVE, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT));
         super.addGameEventListeners(this);
 
         existingMinecarts = new ArrayList<>();
@@ -139,8 +141,9 @@ public class JourneyToSalem extends Minigame implements GameEventListener {
     }
 
     private void loadSongs() {
-        File nbsDirectory = new File(nbsDirectoryPath);
-        filesLeft = new ArrayList<>(Arrays.asList(nbsDirectory.listFiles()));
+//        File nbsDirectory = new File(nbsDirectoryPath);
+//        filesLeft = new ArrayList<>(Arrays.asList(nbsDirectory.listFiles()));
+        filesLeft = MusicManager.getCopyOfFiles();
         songs.clear();
         for (int i = 0; i < songBufferSize; i++) {
             int index = rnd.nextInt(filesLeft.size());

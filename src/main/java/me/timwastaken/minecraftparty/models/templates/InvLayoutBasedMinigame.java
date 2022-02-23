@@ -2,12 +2,14 @@ package me.timwastaken.minecraftparty.models.templates;
 
 import me.timwastaken.minecraftparty.managers.DatabaseManager;
 import me.timwastaken.minecraftparty.models.enums.ItemType;
+import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,8 +37,8 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
         reversedItemMap.forEach((k, v) -> System.out.println("key '" + k + "' -> value '" + v + "'"));
     }
 
-    public InvLayoutBasedMinigame(MinigameType type, Player... players) {
-        super(type);
+    public InvLayoutBasedMinigame(MinigameType type, List<MinigameFlag> flags, Player... players) {
+        super(type, flags);
         this.players = players;
     }
 
