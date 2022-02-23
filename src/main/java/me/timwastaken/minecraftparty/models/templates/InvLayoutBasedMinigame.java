@@ -34,7 +34,7 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
     public void setItemMap(HashMap<ItemType, ItemStack> itemMap) {
         this.itemMap = new ConcurrentHashMap<>(itemMap);
         this.reversedItemMap = computeReversedItemMap(itemMap);
-        reversedItemMap.forEach((k, v) -> System.out.println("key '" + k + "' -> value '" + v + "'"));
+//        reversedItemMap.forEach((k, v) -> System.out.println("key '" + k + "' -> value '" + v + "'"));
     }
 
     public InvLayoutBasedMinigame(MinigameType type, List<MinigameFlag> flags, Player... players) {
@@ -86,19 +86,19 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
     }
 
     protected void updateInvLayout(Player p) {
-        System.out.println(reversedItemMap.keySet().size());
+//        System.out.println(reversedItemMap.keySet().size());
         HashMap<Integer, ItemType> layout = new HashMap<>();
         for (int i = 0; i < p.getInventory().getContents().length; i++) {
             ItemStack current = p.getInventory().getItem(i);
             if (current == null) continue;
-            System.out.println("current loop item: " + current.getType());
-            reversedItemMap.forEach((k, v) -> System.out.println("key '" + k + "' -> value '" + v + "'"));
+//            System.out.println("current loop item: " + current.getType());
+//            reversedItemMap.forEach((k, v) -> System.out.println("key '" + k + "' -> value '" + v + "'"));
             for (Map.Entry<ItemStack, ItemType> entry : reversedItemMap.entrySet()) {
                 ItemStack stack = entry.getKey();
                 ItemType connectedType = entry.getValue();
                 if (!layout.containsValue(connectedType) && areSimilar(current, stack)) {
                     layout.put(i, connectedType);
-                    System.out.println("updated " + p.getName() + ": " + i + " -> " + connectedType);
+//                    System.out.println("updated " + p.getName() + ": " + i + " -> " + connectedType);
                 }
             }
         }
@@ -117,7 +117,7 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
     }
 
     public void saveLayoutsToDatabase() {
-        playerInventoryLayouts.forEach((uuid, map) -> System.out.println(Bukkit.getPlayer(uuid) + " " + DatabaseManager.saveInvLayout(uuid, type, map)));
+        playerInventoryLayouts.forEach((uuid, map) -> DatabaseManager.saveInvLayout(uuid, type, map));
     }
 
 }

@@ -102,7 +102,7 @@ public class Lasertag extends Minigame implements GameEventListener {
     public void onPlayerDeath(Player p) {
         p.setHealth(20);
         p.teleport(randomSpawnOnMap());
-        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_ATTACK_WEAK, 1f , 1f);
+        p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1f , 2f);
     }
 
     public void givePointToPlayer(Player damager) {

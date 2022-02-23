@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
+import me.timwastaken.minecraftparty.managers.NotificationManager;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
@@ -256,16 +257,16 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         gamesPlayed.remove(id);
         Player p = Bukkit.getPlayer(id);
         if (p == null) return;
-        p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1f, 1f);
-        p.sendTitle(ChatColor.DARK_RED + "" + ChatColor.BOLD + "You're out", ChatColor.GRAY + "out of lives", 10, 80, 10);
+        NotificationManager.notifyPlayerOut(p, "out of lives!");
     }
 
     private void checkEnd() {
         if (gamesPlayed.size() == 1) {
-            Bukkit.getOnlinePlayers().forEach(p -> {
-                p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.5f);
-                p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()).getName(), ChatColor.GRAY + "won the game", 10, 80, 10);
-            });
+//            Bukkit.getOnlinePlayers().forEach(p -> {
+//                p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.5f);
+//                p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()).getName(), ChatColor.GRAY + "won the game", 10, 80, 10);
+//            });
+            NotificationManager.announceGameWinner(Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()));
             endGame();
         }
     }

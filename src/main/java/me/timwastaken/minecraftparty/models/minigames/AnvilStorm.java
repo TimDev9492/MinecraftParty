@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
+import me.timwastaken.minecraftparty.managers.NotificationManager;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
@@ -12,6 +13,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.management.NotificationFilter;
 import java.util.*;
 
 public class AnvilStorm extends Minigame implements GameEventListener {
@@ -49,16 +51,9 @@ public class AnvilStorm extends Minigame implements GameEventListener {
     public void onAnvilHitPlayer(Player p) {
         if (ingamePlayers.remove(p.getUniqueId())) {
             if (ingamePlayers.size() > 1) {
-                p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1f, 2f);
-                p.sendTitle(ChatColor.DARK_RED + "" + ChatColor.BOLD + "You're out!", ChatColor.GRAY + "You were hit by an anvil", 10, 80, 10);
+                NotificationManager.notifyPlayerOut(p, "You were hit by an anvil!");
             } else {
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.5f);
-                    if (ingamePlayers.size() == 0)
-                        player.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + "Game won!", ChatColor.GRAY + "You won the game!", 10, 80, 10);
-                    else
-                        player.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + Bukkit.getPlayer(ingamePlayers.get(0)).getName(), ChatColor.GRAY + "won the game", 10, 80, 10);
-                });
+                NotificationManager.announceGameWinner(Bukkit.getPlayer(ingamePlayers.get(0)));
             }
             p.setGameMode(GameMode.SPECTATOR);
         }

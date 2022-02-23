@@ -85,4 +85,4 @@ minigames:
     gun_material: NETHERITE_PICKAXE
     spawn_delta: 19
     hit_damage: 8
-    shot_delay_ticks: 60
+    shot_delay_ticks: 30

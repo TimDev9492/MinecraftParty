@@ -7,6 +7,7 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.managers.MusicManager;
+import me.timwastaken.minecraftparty.managers.NotificationManager;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
@@ -105,8 +106,7 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
     private void playerOut(Player p) {
         if (!ingamePlayers.contains(p.getUniqueId())) return;
         ingamePlayers.remove(p.getUniqueId());
-        p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1f, 1f);
-        p.sendTitle(ChatColor.DARK_RED + "" + ChatColor.BOLD + "You're out", ChatColor.GRAY + "No minecart for you", 10, 80, 10);
+        NotificationManager.notifyPlayerOut(p, "No minecart for you!");
         p.setGameMode(GameMode.SPECTATOR);
     }
 
@@ -132,10 +132,7 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
         if (end) {
             Player winner = Bukkit.getPlayer(ingamePlayers.get(0));
             if (winner == null) return end;
-            Bukkit.getOnlinePlayers().forEach(p -> {
-                p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.5f);
-                p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + winner.getName(), ChatColor.GRAY + "won the game", 10, 80, 10);
-            });
+            NotificationManager.announceGameWinner(winner);
         }
         return end;
     }
@@ -151,7 +148,7 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
             Song song = NBSDecoder.parse(randomFile);
             String songName = song.getTitle();
             if (songName.isEmpty()) {
-                songName = removeExtention(randomFile.getName());
+                songName = removeExtension(randomFile.getName());
             }
             songs.put(song, songName);
             filesLeft.remove(index);
@@ -216,7 +213,7 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
         ingamePlayers.remove(p.getUniqueId());
     }
 
-    private String removeExtention(String filePath) {
+    private String removeExtension(String filePath) {
         // These first few lines the same as Justin's
         File f = new File(filePath);
 
