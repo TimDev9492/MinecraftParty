@@ -2,6 +2,7 @@ package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.managers.NotificationManager;
+import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
@@ -200,6 +201,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         winner.playSound(winner.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         looser.playSound(looser.getLocation(), Sound.ENTITY_CAT_HISS, 1f, 1f);
         removeLife(looser.getUniqueId());
+        ScoreboardSystem.refreshScoreboards();
         resetMap();
         if (gamesPlayed.keySet().size() > 1) generateNewFightingPlayers();
     }
@@ -350,6 +352,28 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
             if (stack != null && stack.getType() == mat) amount += stack.getAmount();
         }
         return amount;
+    }
+
+    @Override
+    public List<String> getScoreboardList() {
+        List<String> toReturn = new ArrayList<>();
+        Map<UUID, Integer> sorted = MinecraftParty.sortMap(playerLives);
+        for (Map.Entry<UUID, Integer> entry : sorted.entrySet()) {
+            Player p = Bukkit.getPlayer(entry.getKey());
+            if (p == null) continue;
+            StringBuilder element = new StringBuilder();
+            if (entry.getValue() > 0) element.append(ChatColor.GREEN).append("✚".repeat(entry.getValue()));
+            else element.append(ChatColor.DARK_RED).append("✘");
+            element.append(" ").append(ChatColor.GRAY).append(p.getName());
+            toReturn.add(element.toString());
+        }
+        return toReturn;
+    }
+
+    @Override
+    public String getPersonalLine(Player p) {
+        int lives = playerLives.get(p.getUniqueId());
+        return ChatColor.YELLOW + "" + ChatColor.ITALIC + "Lives: " + ChatColor.RESET + (lives > 0 ? ChatColor.GREEN + "✚".repeat(lives) : ChatColor.DARK_RED + "✘");
     }
 
 //    private void updateInvLayout(Player p) {

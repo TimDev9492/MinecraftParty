@@ -2,14 +2,15 @@ package me.timwastaken.minecraftparty.models.templates;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.managers.GameManager;
+import me.timwastaken.minecraftparty.managers.ScoreSystem;
+import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class Minigame {
 
@@ -50,6 +51,9 @@ public abstract class Minigame {
             p.getInventory().clear();
         });
         gameEventListeners.forEach(GameEventListener::onWorldLoaded);
+        ScoreSystem.addPlayers(Bukkit.getOnlinePlayers().toArray(new Player[0]));
+        ScoreboardSystem.addPlayerScoreboard(Bukkit.getOnlinePlayers().toArray(new Player[0]));
+        ScoreboardSystem.refreshScoreboards();
     }
 
     public void unloadWorld() {
@@ -95,6 +99,7 @@ public abstract class Minigame {
             public void run() {
                 closeWorld();
                 GameManager.clearMinigame();
+                ScoreboardSystem.refreshScoreboards();
             }
         }.runTaskLater(MinecraftParty.getInstance(), 60L);
     }
@@ -112,6 +117,14 @@ public abstract class Minigame {
             p.getInventory().clear();
         });
         unloadWorld();
+    }
+
+    public List<String> getScoreboardList() {
+        return null;
+    }
+
+    public String getPersonalLine(Player p) {
+        return null;
     }
 
     public boolean hasFlag(MinigameFlag flag) {

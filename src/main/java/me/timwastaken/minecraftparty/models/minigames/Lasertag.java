@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
+import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
@@ -110,6 +111,7 @@ public class Lasertag extends Minigame implements GameEventListener {
             points.put(damager.getUniqueId(), points.get(damager.getUniqueId()) + 1);
             damager.playSound(damager.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         }
+        ScoreboardSystem.refreshScoreboards();
     }
 
     private Location randomSpawnOnMap() {
@@ -171,6 +173,23 @@ public class Lasertag extends Minigame implements GameEventListener {
     @Override
     public void onPlayerLeave(Player p) {
 
+    }
+
+    @Override
+    public List<String> getScoreboardList() {
+        List<String> toReturn = new ArrayList<>();
+        Map<UUID, Integer> sorted = MinecraftParty.sortMap(points);
+        for (Map.Entry<UUID, Integer> entry : sorted.entrySet()) {
+            Player p = Bukkit.getPlayer(entry.getKey());
+            if (p == null) continue;
+            toReturn.add(ChatColor.GOLD + "" + entry.getValue() + " " + ChatColor.GRAY + p.getName());
+        }
+        return toReturn;
+    }
+
+    @Override
+    public String getPersonalLine(Player p) {
+        return ChatColor.YELLOW + "" + ChatColor.ITALIC + "Kills: " + ChatColor.RESET + points.get(p.getUniqueId());
     }
 
 }

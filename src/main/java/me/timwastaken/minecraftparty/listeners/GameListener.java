@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.listeners;
 
 import me.timwastaken.minecraftparty.managers.GameManager;
+import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.minigames.AnvilStorm;
@@ -22,10 +23,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.player.PlayerBedEnterEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 
 import java.util.Arrays;
@@ -165,6 +163,11 @@ public class GameListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (GameManager.getActiveMinigame() == null) return;
         ((GameEventListener) GameManager.getActiveMinigame()).onPlayerLeave(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        ScoreboardSystem.refreshScoreboard(event.getPlayer());
     }
 
 }
