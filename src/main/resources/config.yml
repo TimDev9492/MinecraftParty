@@ -86,3 +86,11 @@ minigames:
     spawn_delta: 19
     hit_damage: 8
     shot_delay_ticks: 30
+  approximate:
+    world_name: world
+    reward: 1
+    origin:
+      x: 0
+      y: 65
+      z: 0
+    value1: 42

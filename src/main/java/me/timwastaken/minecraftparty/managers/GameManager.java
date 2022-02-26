@@ -1,12 +1,9 @@
 package me.timwastaken.minecraftparty.managers;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
-import me.timwastaken.minecraftparty.models.minigames.Lasertag;
+import me.timwastaken.minecraftparty.models.minigames.*;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
-import me.timwastaken.minecraftparty.models.minigames.AnvilStorm;
-import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
-import me.timwastaken.minecraftparty.models.minigames.MlgRush;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -65,6 +62,9 @@ public class GameManager {
             }
             case LASERTAG -> {
                 activeMinigame = new Lasertag(players);
+            }
+            case APPROXIMATE -> {
+                activeMinigame = new Approximate(players);
             }
             default -> successful = false;
         }
