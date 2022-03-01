@@ -1,0 +1,9 @@
+reward: 1
+origin:
+  x: 0
+  y: 65
+  z: 0
+delta: 10
+fall_height: 20
+anvils_per_second: 1
+world_name: world

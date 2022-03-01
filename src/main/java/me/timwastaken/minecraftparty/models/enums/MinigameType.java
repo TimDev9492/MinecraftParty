@@ -2,13 +2,14 @@ package me.timwastaken.minecraftparty.models.enums;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
 public enum MinigameType {
 
-    // requires the config to have the section minigames.<alias> with the following arguments:
+    // requires a <alias>.yml config file in the resources directory with the following values:
     //
     // - origin -> x, y, z (world spawn position)
     // - world_name -> name of the world directory
@@ -22,20 +23,15 @@ public enum MinigameType {
 
     private final String displayName;
     private final String alias;
-    private final String worldName;
-    private final Vector origin;
-    private final int reward;
+
+    // need to get passed through feedConfig()
+    private String worldName;
+    private Vector origin;
+    private int reward;
 
     MinigameType(String displayName, String alias) {
         this.displayName = displayName;
         this.alias = alias;
-        this.worldName = MinecraftParty.getInstance().getConfig().getString("minigames." + alias + ".world_name");
-        this.origin = new Vector(
-                MinecraftParty.getInstance().getConfig().getInt("minigames." + alias + ".origin.x") + 0.5,
-                MinecraftParty.getInstance().getConfig().getInt("minigames." + alias + ".origin.y"),
-                MinecraftParty.getInstance().getConfig().getInt("minigames." + alias + ".origin.z") + 0.5
-        );
-        this.reward = MinecraftParty.getInstance().getConfig().getInt("minigames." + alias + ".reward");
     }
 
     public String getDisplayName() {
@@ -65,6 +61,16 @@ public enum MinigameType {
 
     public Vector getOrigin() {
         return origin;
+    }
+
+    public void feedConfig(FileConfiguration typeConfig) {
+        this.worldName = typeConfig.getString("world_name");
+        this.origin = new Vector(
+                typeConfig.getInt("origin.x") + 0.5,
+                typeConfig.getInt("origin.y"),
+                typeConfig.getInt("origin.z") + 0.5
+        );
+        this.reward = typeConfig.getInt("reward");
     }
 
 }

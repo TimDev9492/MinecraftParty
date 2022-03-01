@@ -1,0 +1,12 @@
+world_name: world
+reward: 1
+origin:
+  x: 0
+  y: 65
+  z: 0
+song_buffer_size: 10
+min_ticks: 160
+max_ticks: 320
+ticks_between: 160
+exponential_cab: 8
+spawn_radius: 22

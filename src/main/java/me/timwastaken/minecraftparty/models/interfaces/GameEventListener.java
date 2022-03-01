@@ -1,5 +1,6 @@
 package me.timwastaken.minecraftparty.models.interfaces;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public interface GameEventListener {

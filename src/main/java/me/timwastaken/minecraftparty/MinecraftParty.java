@@ -4,13 +4,11 @@ import me.timwastaken.minecraftparty.commands.MinigameCommand;
 import me.timwastaken.minecraftparty.commands.MusicCommand;
 import me.timwastaken.minecraftparty.listeners.GameListener;
 import me.timwastaken.minecraftparty.listeners.GlobalListener;
-import me.timwastaken.minecraftparty.managers.DatabaseManager;
-import me.timwastaken.minecraftparty.managers.GameManager;
-import me.timwastaken.minecraftparty.managers.MusicManager;
-import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
+import me.timwastaken.minecraftparty.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -36,6 +34,11 @@ public final class MinecraftParty extends JavaPlugin {
         GameManager.init();
         MusicManager.init();
         ScoreboardSystem.init();
+        try {
+            ConfigManager.init();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Bukkit.getPluginManager().registerEvents(new GlobalListener(), this);
         Bukkit.getPluginManager().registerEvents(new GameListener(), this);

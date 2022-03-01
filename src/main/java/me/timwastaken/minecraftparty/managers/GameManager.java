@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
+
 public class GameManager {
 
     private static Minigame activeMinigame;
@@ -49,28 +51,32 @@ public class GameManager {
     }
 
     public static void loadMinigame(MinigameType type, Player... players) {
-        boolean successful = true;
-        switch (type) {
-            case ANVIL_STORM -> {
-                activeMinigame = new AnvilStorm(players);
+        try {
+            boolean successful = true;
+            switch (type) {
+                case ANVIL_STORM -> {
+                    activeMinigame = new AnvilStorm(players);
+                }
+                case MLG_RUSH -> {
+                    activeMinigame = new MlgRush(players);
+                }
+                case MUSICAL_CHAIRS -> {
+                    activeMinigame = new MusicalChairs(players);
+                }
+                case LASERTAG -> {
+                    activeMinigame = new Lasertag(players);
+                }
+                case APPROXIMATE -> {
+                    activeMinigame = new Approximate(players);
+                }
+                default -> successful = false;
             }
-            case MLG_RUSH -> {
-                activeMinigame = new MlgRush(players);
+            if (successful) {
+                activeMinigame.loadWorld();
+                activeMinigame.startCountdown();
             }
-            case MUSICAL_CHAIRS -> {
-                activeMinigame = new MusicalChairs(players);
-            }
-            case LASERTAG -> {
-                activeMinigame = new Lasertag(players);
-            }
-            case APPROXIMATE -> {
-                activeMinigame = new Approximate(players);
-            }
-            default -> successful = false;
-        }
-        if (successful) {
-            activeMinigame.loadWorld();
-            activeMinigame.startCountdown();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

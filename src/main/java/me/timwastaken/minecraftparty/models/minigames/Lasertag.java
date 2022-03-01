@@ -6,17 +6,14 @@ import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,11 +28,12 @@ public class Lasertag extends Minigame implements GameEventListener {
     private Material gunMaterial;
     private int spawnDelta;
     private int shotDelayTicks;
+    private int killsToWin;
     private HashMap<UUID, Integer> points;
     private ConcurrentHashMap<UUID, Long> lastTimeFired;
     private boolean IS_RUNNING = false;
 
-    public Lasertag(Player... players) {
+    public Lasertag(Player... players) throws IOException {
         super(type, List.of(MinigameFlag.NO_FALL_DAMAGE, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT));
         super.addGameEventListeners(this);
         this.gameLoops = new ArrayList<>();
@@ -155,11 +153,11 @@ public class Lasertag extends Minigame implements GameEventListener {
 
     @Override
     public void onWorldLoaded() {
-        ConfigurationSection section = MinecraftParty.getInstance().getConfig().getConfigurationSection("minigames." + type.getAlias());
-        gunMaterial = Material.valueOf(section.getString("gun_material"));
-        spawnDelta = section.getInt("spawn_delta");
-        hitDamage = section.getDouble("hit_damage");
-        shotDelayTicks = section.getInt("shot_delay_ticks");
+        gunMaterial = Material.valueOf(getConfig().getString("gun_material"));
+        spawnDelta = getConfig().getInt("spawn_delta");
+        hitDamage = getConfig().getDouble("hit_damage");
+        shotDelayTicks = getConfig().getInt("shot_delay_ticks");
+        killsToWin = getConfig().getInt("kills_to_win");
         ItemStack gun = new ItemStack(gunMaterial);
         ItemMeta meta = gun.getItemMeta();
         meta.setUnbreakable(true);
@@ -189,7 +187,7 @@ public class Lasertag extends Minigame implements GameEventListener {
 
     @Override
     public String getPersonalLine(Player p) {
-        return ChatColor.YELLOW + "" + ChatColor.ITALIC + "Kills: " + ChatColor.RESET + points.get(p.getUniqueId());
+        return ChatColor.YELLOW + "" + ChatColor.ITALIC + "Kills: " + ChatColor.RESET + points.get(p.getUniqueId()) + ChatColor.GRAY +  "/" + killsToWin;
     }
 
 }

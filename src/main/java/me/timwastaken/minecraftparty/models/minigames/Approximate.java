@@ -1,17 +1,19 @@
 package me.timwastaken.minecraftparty.models.minigames;
-import me.timwastaken.minecraftparty.MinecraftParty;
+
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+
+import java.io.IOException;
+import java.util.List;
 
 public class Approximate extends Minigame implements GameEventListener {
 
     private static MinigameType type = MinigameType.APPROXIMATE;
 
-    public Approximate(Player... players) {
+    public Approximate(Player... players) throws IOException {
         super(type, List.of(MinigameFlag.NO_BLOCK_PLACEMENT, MinigameFlag.NO_BLOCK_BREAKING));
         super.addGameEventListeners(this); // required for your events to work
     }
@@ -32,8 +34,7 @@ public class Approximate extends Minigame implements GameEventListener {
 
         // use this to load desired config options that influence the behavior of your plugin
         // example below:
-        ConfigurationSection section = MinecraftParty.getInstance().getConfig().getConfigurationSection("minigames." + type.getAlias());
-        int value1 = section.getInt("value1"); // must exist in config.yml under minigames.your_plugin_alias
+        int value1 = getConfig().getInt("value1"); // must exist in config.yml under minigames.your_plugin_alias
         // ...
     }
 

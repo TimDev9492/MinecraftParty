@@ -15,13 +15,13 @@ import me.timwastaken.minecraftparty.models.templates.MusicalMinigame;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class MusicalChairs extends MusicalMinigame implements GameEventListener {
@@ -47,7 +47,7 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
     private final Random rnd;
     private RadioSongPlayer radio;
 
-    public MusicalChairs(Player... players) {
+    public MusicalChairs(Player... players) throws IOException {
         super(type, List.of(MinigameFlag.NO_PVP, MinigameFlag.NO_DAMAGE, MinigameFlag.NO_PVE, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT));
         super.addGameEventListeners(this);
 
@@ -189,14 +189,13 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
 
     @Override
     public void onWorldLoaded() {
-        ConfigurationSection section = MinecraftParty.getInstance().getConfig().getConfigurationSection("minigames." + type.getAlias());
-        nbsDirectoryPath = section.getString("nbs_directory");
-        songBufferSize = section.getInt("song_buffer_size");
-        minTicks = section.getInt("min_ticks");
-        maxTicks = section.getInt("max_ticks");
-        ticksBetween = section.getInt("ticks_between");
-        exponentialCab = section.getInt("exponential_cab");
-        spawnRadius = section.getInt("spawn_radius");
+        nbsDirectoryPath = getConfig().getString("nbs_directory");
+        songBufferSize = getConfig().getInt("song_buffer_size");
+        minTicks = getConfig().getInt("min_ticks");
+        maxTicks = getConfig().getInt("max_ticks");
+        ticksBetween = getConfig().getInt("ticks_between");
+        exponentialCab = getConfig().getInt("exponential_cab");
+        spawnRadius = getConfig().getInt("spawn_radius");
 
         Playlist playlist = randomPlaylist();
         radio = new RadioSongPlayer(playlist);

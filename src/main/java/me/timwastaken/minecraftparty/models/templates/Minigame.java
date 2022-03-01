@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.models.templates;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
+import me.timwastaken.minecraftparty.managers.ConfigManager;
 import me.timwastaken.minecraftparty.managers.GameManager;
 import me.timwastaken.minecraftparty.managers.ScoreSystem;
 import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
@@ -8,8 +9,11 @@ import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.IOException;
 import java.util.*;
 
 public abstract class Minigame {
@@ -24,7 +28,9 @@ public abstract class Minigame {
 
     private final ArrayList<GameEventListener> gameEventListeners;
 
-    public Minigame(MinigameType type, List<MinigameFlag> flags) {
+    public Minigame(MinigameType type, List<MinigameFlag> flags) throws IOException {
+//        super(type.getAlias());
+//        loadConfig(); // loads the config for the minigame
         this.type = type;
         this.flags = flags;
         this.gameEventListeners = new ArrayList<>();
@@ -149,6 +155,10 @@ public abstract class Minigame {
 
     public long getWhenStarted() {
         return whenStarted;
+    }
+
+    protected FileConfiguration getConfig() {
+        return ConfigManager.getConfig(type.getAlias());
     }
 
 }

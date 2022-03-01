@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
 //        reversedItemMap.forEach((k, v) -> System.out.println("key '" + k + "' -> value '" + v + "'"));
     }
 
-    public InvLayoutBasedMinigame(MinigameType type, List<MinigameFlag> flags, Player... players) {
+    public InvLayoutBasedMinigame(MinigameType type, List<MinigameFlag> flags, Player... players) throws IOException {
         super(type, flags);
         this.players = players;
     }

@@ -1,0 +1,11 @@
+world_name: lasertag
+reward: 1
+origin:
+  x: 0
+  y: 69
+  z: 0
+gun_material: NETHERITE_PICKAXE
+spawn_delta: 19
+hit_damage: 8
+shot_delay_ticks: 30
+kills_to_win: 20

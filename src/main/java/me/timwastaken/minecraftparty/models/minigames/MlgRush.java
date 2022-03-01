@@ -10,7 +10,6 @@ import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.enums.ItemType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityPickupItemEvent;
@@ -18,11 +17,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.IOException;
 import java.util.*;
 
 public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener {
 
-    private static MinigameType type = MinigameType.MLG_RUSH;
+    private static final MinigameType type = MinigameType.MLG_RUSH;
 
     private final Random rnd;
 
@@ -45,7 +45,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
     private double bedProtectionRadius;
     private Material bedMaterial;
 
-    public MlgRush(Player... players) {
+    public MlgRush(Player... players) throws IOException {
         super(type, List.of(MinigameFlag.ZERO_DAMAGE), players);
         super.addGameEventListeners(this);
         this.players = players;
@@ -109,29 +109,28 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
 
     @Override
     public void onWorldLoaded() {
-        ConfigurationSection section = MinecraftParty.getInstance().getConfig().getConfigurationSection("minigames." + type.getAlias());
         fightSpawns = new Location[]{
-                new Location(gameWorld, section.getInt("spawn1.x") + 0.5, section.getInt("spawn1.y"), section.getInt("spawn1.z") + 0.5),
-                new Location(gameWorld, section.getInt("spawn2.x") + 0.5, section.getInt("spawn2.y"), section.getInt("spawn2.z") + 0.5)
+                new Location(gameWorld, getConfig().getInt("spawn1.x") + 0.5, getConfig().getInt("spawn1.y"), getConfig().getInt("spawn1.z") + 0.5),
+                new Location(gameWorld, getConfig().getInt("spawn2.x") + 0.5, getConfig().getInt("spawn2.y"), getConfig().getInt("spawn2.z") + 0.5)
         };
-        fightSpawns[0].setYaw((float) section.getDouble("spawn1.yaw"));
-        fightSpawns[1].setYaw((float) section.getDouble("spawn2.yaw"));
+        fightSpawns[0].setYaw((float) getConfig().getDouble("spawn1.yaw"));
+        fightSpawns[1].setYaw((float) getConfig().getDouble("spawn2.yaw"));
         bedLocations = new Location[]{
-                new Location(gameWorld, section.getInt("bed1.x") + 0.5, section.getInt("bed1.y"), section.getInt("bed1.z") + 0.5),
-                new Location(gameWorld, section.getInt("bed2.x") + 0.5, section.getInt("bed2.y"), section.getInt("bed2.z") + 0.5)
+                new Location(gameWorld, getConfig().getInt("bed1.x") + 0.5, getConfig().getInt("bed1.y"), getConfig().getInt("bed1.z") + 0.5),
+                new Location(gameWorld, getConfig().getInt("bed2.x") + 0.5, getConfig().getInt("bed2.y"), getConfig().getInt("bed2.z") + 0.5)
         };
-        spectatorSpawn = new Location(gameWorld, section.getInt("spectator_spawn.x") + 0.5, section.getInt("spectator_spawn.y"), section.getInt("spectator_spawn.z") + 0.5);
-        spectatorSpawn.setPitch((float) section.getDouble("spectator_spawn.pitch"));
-        spectatorSpawn.setYaw((float) section.getDouble("spectator_spawn.yaw"));
-        resetDepth = section.getInt("reset_depth");
-        buildHeight = origin.getBlockY() + section.getInt("build_height") - 1;
-        bedMaterial = Material.valueOf(section.getString("bed_material"));
-        bedProtectionRadius = section.getDouble("bed_protection_radius");
-        startLives = section.getInt("lives");
+        spectatorSpawn = new Location(gameWorld, getConfig().getInt("spectator_spawn.x") + 0.5, getConfig().getInt("spectator_spawn.y"), getConfig().getInt("spectator_spawn.z") + 0.5);
+        spectatorSpawn.setPitch((float) getConfig().getDouble("spectator_spawn.pitch"));
+        spectatorSpawn.setYaw((float) getConfig().getDouble("spectator_spawn.yaw"));
+        resetDepth = getConfig().getInt("reset_depth");
+        buildHeight = origin.getBlockY() + getConfig().getInt("build_height") - 1;
+        bedMaterial = Material.valueOf(getConfig().getString("bed_material"));
+        bedProtectionRadius = getConfig().getDouble("bed_protection_radius");
+        startLives = getConfig().getInt("lives");
         fighterInv = new ItemStack[]{
-                new ItemStack(Material.valueOf(section.getString("weapon_material"))),
-                new ItemStack(Material.valueOf(section.getString("tool_material"))),
-                new ItemStack(Material.valueOf(section.getString("block_material")), 64)
+                new ItemStack(Material.valueOf(getConfig().getString("weapon_material"))),
+                new ItemStack(Material.valueOf(getConfig().getString("tool_material"))),
+                new ItemStack(Material.valueOf(getConfig().getString("block_material")), 64)
         };
         setFallback(new HashMap<>() {{
             put(0, ItemType.WEAPON);

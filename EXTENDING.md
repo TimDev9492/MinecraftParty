@@ -4,30 +4,26 @@ If you want to add your own minigame to the plugin, you have to follow these ste
 
 
 
-## 1. Add to the config.yml
+## 1. Add your configuration `yml` file
 
-   The `config.yml` file contains attributes about your minigame that get read by the plugin on start. Add your values to the `minigames` list.
+   The configuration file contains attributes about your minigame that get read by the plugin on start. Add your values to a file called `<alias>.yml` where `<alias>` is your plugin name or alias in [snake_case](https://en.wikipedia.org/wiki/Snake_case).
    
    Required values are:
    
    - `origin` - This holds the x, y, and z coordinate for the player spawn. Players get teleported to this location when your minigame starts
-   - `world_name` - The name of your world directory. Specify the value from `default_world.name` to use the default world.
+   - `world_name` - The name of your world directory. Specify the value from the `config.yml` file -> `default_world.name` to use the default world.
    - `reward` - This value represents the reward factor associated with your game (not implemented yet). Specify any number for the time being.
 
 ### Example:
 
 ```yml
-# ...
-minigames:
-# ...
-  your_plugin_alias:
-    reward: 1
-    origin:
-      x: 0
-      y: 65
-      z: 0
-    world_name: my_plugin_world
-    # add more values here
+reward: 1
+origin:
+  x: 0
+  y: 65
+  z: 0
+world_name: my_plugin_world
+# add more key-value pairs here
 ```
 
 
@@ -85,9 +81,8 @@ public class MyMinigame extends Minigame implements GameEventListener {
 
         // use this to load desired config options that influence the behavior of your plugin
         // example below:
-        ConfigurationSection section = MinecraftParty.getInstance().getConfig().getConfigurationSection("minigames." + type.getAlias());
-        int value1 = section.getInt("value1"); // must exist in config.yml under minigames.your_plugin_alias
-        String str1 = section.getString("str1");
+        int value1 = getConfig().getInt("value1"); // must exist in the your_plugin_alias.yml file
+        String str1 = getConfig().getString("str1");
         // ...
     }
 

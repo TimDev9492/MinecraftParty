@@ -7,13 +7,12 @@ import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.management.NotificationFilter;
+import java.io.IOException;
 import java.util.*;
 
 public class AnvilStorm extends Minigame implements GameEventListener {
@@ -27,15 +26,14 @@ public class AnvilStorm extends Minigame implements GameEventListener {
     private final int fallHeight;
     private final double anvilStartRate;
 
-    public AnvilStorm(Player... players) {
+    public AnvilStorm(Player... players) throws IOException {
         super(type, List.of(MinigameFlag.NO_PVP, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT));
         super.addGameEventListeners(this);
 
         gameLoops = new ArrayList<>();
-        ConfigurationSection section = MinecraftParty.getInstance().getConfig().getConfigurationSection("minigames." + type.getAlias());
-        this.delta = section.getInt("delta");
-        this.fallHeight = section.getInt("fall_height");
-        this.anvilStartRate = section.getDouble("anvils_per_second");
+        this.delta = getConfig().getInt("delta");
+        this.fallHeight = getConfig().getInt("fall_height");
+        this.anvilStartRate = getConfig().getDouble("anvils_per_second");
         this.ingamePlayers = new ArrayList<>();
         this.random = new Random();
         Arrays.stream(players).forEach(player -> ingamePlayers.add(player.getUniqueId()));
