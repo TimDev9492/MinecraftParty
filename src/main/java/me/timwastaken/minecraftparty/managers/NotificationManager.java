@@ -19,4 +19,11 @@ public class NotificationManager {
         out.sendTitle(ChatColor.DARK_RED + "" + ChatColor.BOLD + "You're out!", ChatColor.GRAY + reason, 10, 80, 10);
     }
 
+    public static void announceStoppingGame(Player... players) {
+        for (Player player : players) {
+            player.playSound(player.getLocation(), Sound.ENTITY_PUFFER_FISH_BLOW_UP, 1f, 1f);
+            player.sendTitle(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Stopping Minigame", ChatColor.RED + "Just wait...", 10, 80, 10);
+        }
+    }
+
 }

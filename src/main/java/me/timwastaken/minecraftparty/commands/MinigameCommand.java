@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.commands;
 
 import me.timwastaken.minecraftparty.managers.GameManager;
+import me.timwastaken.minecraftparty.managers.NotificationManager;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,6 +23,7 @@ public class MinigameCommand implements TabExecutor {
         } else {
             String operation = args[0];
             if (operation.equals("stop")) {
+                NotificationManager.announceStoppingGame(Bukkit.getOnlinePlayers().toArray(new Player[0]));
                 GameManager.stopMinigame();
             } else if (operation.equals("load")) {
                 MinigameType typeToLoad = MinigameType.fromAlias(args[1]);
