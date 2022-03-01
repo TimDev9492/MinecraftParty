@@ -132,7 +132,7 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
         if (end) {
             Player winner = Bukkit.getPlayer(ingamePlayers.get(0));
             if (winner == null) return end;
-            NotificationManager.announceGameWinner(winner);
+            NotificationManager.announceGameWinners(winner);
         }
         return end;
     }

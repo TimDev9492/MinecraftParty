@@ -5,12 +5,19 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+
 public class NotificationManager {
 
-    public static void announceGameWinner(Player winner) {
+    public static void announceGameWinners(Player... winners) {
+        StringBuilder playerNames = new StringBuilder();
+        Arrays.stream(winners).forEach(winner -> playerNames.append(winner.getName()).append(", "));
+        String playerString = playerNames.toString().trim();
+        playerString = playerString.substring(0, playerString.length() - 1);
+        String finalPlayerString = playerString;
         Bukkit.getOnlinePlayers().forEach(p -> {
             p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.5f);
-            p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + winner.getName(), ChatColor.GRAY + "won the game", 10, 80, 10);
+            p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + finalPlayerString, ChatColor.GRAY + "won the game", 10, 80, 10);
         });
     }
 

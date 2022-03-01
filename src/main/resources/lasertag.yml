@@ -8,4 +8,4 @@ gun_material: NETHERITE_PICKAXE
 spawn_delta: 19
 hit_damage: 8
 shot_delay_ticks: 30
-kills_to_win: 20
+game_time_seconds: 120

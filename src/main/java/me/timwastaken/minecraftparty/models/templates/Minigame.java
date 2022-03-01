@@ -29,10 +29,8 @@ public abstract class Minigame {
     private final ArrayList<GameEventListener> gameEventListeners;
 
     public Minigame(MinigameType type, List<MinigameFlag> flags) throws IOException {
-//        super(type.getAlias());
-//        loadConfig(); // loads the config for the minigame
         this.type = type;
-        this.flags = flags;
+        this.flags = new ArrayList<>(flags);
         this.gameEventListeners = new ArrayList<>();
         this.gameWorldName = type.getWorldName();
     }
@@ -159,6 +157,10 @@ public abstract class Minigame {
 
     protected FileConfiguration getConfig() {
         return ConfigManager.getConfig(type.getAlias());
+    }
+
+    protected void addFlag(MinigameFlag flag) {
+        if (!this.flags.contains(flag)) this.flags.add(flag);
     }
 
 }

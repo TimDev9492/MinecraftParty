@@ -267,7 +267,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
 //                p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.5f);
 //                p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()).getName(), ChatColor.GRAY + "won the game", 10, 80, 10);
 //            });
-            NotificationManager.announceGameWinner(Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()));
+            NotificationManager.announceGameWinners(Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()));
             endGame();
         }
     }

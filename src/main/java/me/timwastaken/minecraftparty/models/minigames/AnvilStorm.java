@@ -51,7 +51,7 @@ public class AnvilStorm extends Minigame implements GameEventListener {
             if (ingamePlayers.size() > 1) {
                 NotificationManager.notifyPlayerOut(p, "You were hit by an anvil!");
             } else {
-                NotificationManager.announceGameWinner(Bukkit.getPlayer(ingamePlayers.get(0)));
+                NotificationManager.announceGameWinners(Bukkit.getPlayer(ingamePlayers.get(0)));
             }
             p.setGameMode(GameMode.SPECTATOR);
         }

@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
+import me.timwastaken.minecraftparty.managers.NotificationManager;
 import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
@@ -28,7 +29,7 @@ public class Lasertag extends Minigame implements GameEventListener {
     private Material gunMaterial;
     private int spawnDelta;
     private int shotDelayTicks;
-    private int killsToWin;
+    private int gameTimer;
     private HashMap<UUID, Integer> points;
     private ConcurrentHashMap<UUID, Long> lastTimeFired;
     private boolean IS_RUNNING = false;
@@ -50,6 +51,18 @@ public class Lasertag extends Minigame implements GameEventListener {
     @Override
     public void onGameStart() {
         IS_RUNNING = true;
+        BukkitRunnable timer = new BukkitRunnable() {
+            @Override
+            public void run() {
+                ScoreboardSystem.refreshScoreboards();
+                if (gameTimer == 0) {
+                    gameEnd();
+                }
+                gameTimer--;
+            }
+        };
+        timer.runTaskTimer(MinecraftParty.getInstance(), 0L, 20L);
+        gameLoops.add(timer);
     }
 
     public void onPlayerShootGun(Player p) {
@@ -101,15 +114,38 @@ public class Lasertag extends Minigame implements GameEventListener {
     public void onPlayerDeath(Player p) {
         p.setHealth(20);
         p.teleport(randomSpawnOnMap());
-        p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1f , 2f);
+        p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1f, 2f);
     }
 
     public void givePointToPlayer(Player damager) {
+        int newScore = 0;
         if (points.containsKey(damager.getUniqueId())) {
-            points.put(damager.getUniqueId(), points.get(damager.getUniqueId()) + 1);
+            newScore = points.get(damager.getUniqueId()) + 1;
+            points.put(damager.getUniqueId(), newScore);
             damager.playSound(damager.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         }
         ScoreboardSystem.refreshScoreboards();
+    }
+
+    private void gameEnd() {
+        ArrayList<Player> winners = new ArrayList<>();
+        int measure = -1;
+        for (Player p : players) {
+            int currentScore = points.get(p.getUniqueId());
+            if (currentScore == measure) {
+                winners.add(p);
+            } else if (currentScore > measure) {
+                winners.clear();
+                winners.add(p);
+                measure = currentScore;
+            }
+        }
+        announceWinners(winners);
+    }
+
+    private void announceWinners(ArrayList<Player> winners) {
+        NotificationManager.announceGameWinners(winners.toArray(new Player[0]));
+        endGame();
     }
 
     private Location randomSpawnOnMap() {
@@ -126,7 +162,8 @@ public class Lasertag extends Minigame implements GameEventListener {
     private boolean playerLooksAtPlayer(Player looking, Player at) {
         Vector atCenter = at.getLocation().clone().add(0, 0.9, 0).toVector();
         double distEyeToCenter = looking.getEyeLocation().toVector().distance(atCenter);
-        if (gameWorld.rayTraceBlocks(looking.getEyeLocation(), looking.getEyeLocation().getDirection(), distEyeToCenter) != null) return false;
+        if (gameWorld.rayTraceBlocks(looking.getEyeLocation(), looking.getEyeLocation().getDirection(), distEyeToCenter) != null)
+            return false;
         Vector mapped = looking.getEyeLocation().toVector().add(looking.getEyeLocation().getDirection().multiply(distEyeToCenter));
         double distHoriz = atCenter.clone().setY(0).distance(mapped.clone().setY(0)); // horizontal distance
         double distVert = mapped.getY() - at.getLocation().getY();
@@ -149,6 +186,8 @@ public class Lasertag extends Minigame implements GameEventListener {
     public void onGameEnd() {
         IS_RUNNING = false;
         gameLoops.forEach(BukkitRunnable::cancel);
+        Arrays.stream(players).forEach(p -> p.getInventory().clear());
+        addFlag(MinigameFlag.NO_PVP);
     }
 
     @Override
@@ -157,7 +196,7 @@ public class Lasertag extends Minigame implements GameEventListener {
         spawnDelta = getConfig().getInt("spawn_delta");
         hitDamage = getConfig().getDouble("hit_damage");
         shotDelayTicks = getConfig().getInt("shot_delay_ticks");
-        killsToWin = getConfig().getInt("kills_to_win");
+        gameTimer = getConfig().getInt("game_time_seconds");
         ItemStack gun = new ItemStack(gunMaterial);
         ItemMeta meta = gun.getItemMeta();
         meta.setUnbreakable(true);
@@ -176,6 +215,9 @@ public class Lasertag extends Minigame implements GameEventListener {
     @Override
     public List<String> getScoreboardList() {
         List<String> toReturn = new ArrayList<>();
+        if (IS_RUNNING) {
+            toReturn.add(ChatColor.YELLOW + "" + ChatColor.ITALIC + "Time remaining: " + ChatColor.GRAY + String.format("%02d:%02d", gameTimer / 60, gameTimer % 60));
+        }
         Map<UUID, Integer> sorted = MinecraftParty.sortMap(points);
         for (Map.Entry<UUID, Integer> entry : sorted.entrySet()) {
             Player p = Bukkit.getPlayer(entry.getKey());
@@ -187,7 +229,7 @@ public class Lasertag extends Minigame implements GameEventListener {
 
     @Override
     public String getPersonalLine(Player p) {
-        return ChatColor.YELLOW + "" + ChatColor.ITALIC + "Kills: " + ChatColor.RESET + points.get(p.getUniqueId()) + ChatColor.GRAY +  "/" + killsToWin;
+        return ChatColor.YELLOW + "" + ChatColor.ITALIC + "Kills: " + ChatColor.RESET + points.get(p.getUniqueId());
     }
 
 }
