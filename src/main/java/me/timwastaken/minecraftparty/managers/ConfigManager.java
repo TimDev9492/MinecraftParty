@@ -11,6 +11,11 @@ import java.util.HashMap;
 public class ConfigManager {
 
     private static HashMap<String, FileConfiguration> configs;
+    private static boolean debugMode = false;
+
+    public static void setDebugging(boolean debugging) {
+        debugMode = debugging;
+    }
 
     public static void init() throws IOException {
         configs = new HashMap<>();
@@ -28,8 +33,11 @@ public class ConfigManager {
         InputStream stream = MinecraftParty.getInstance().getResource(filename);
         if (stream != null) {
             YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(stream));
-            config.setDefaults(defaultConfig);
-            if (!configFile.exists()) {
+            if (debugMode)
+                config = defaultConfig;
+            else
+                config.setDefaults(defaultConfig);
+            if (!configFile.exists() || debugMode) {
                 config.options().copyDefaults(true);
                 config.save(configFile);
             }

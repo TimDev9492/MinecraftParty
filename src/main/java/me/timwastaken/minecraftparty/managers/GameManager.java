@@ -69,6 +69,9 @@ public class GameManager {
                 case APPROXIMATE -> {
                     activeMinigame = new Approximate(players);
                 }
+                case ONE_IN_THE_CHAMBER -> {
+                    activeMinigame = new OneInTheChamber(players);
+                }
                 default -> successful = false;
             }
             if (successful) {

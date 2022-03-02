@@ -1,0 +1,10 @@
+world_name: lasertag
+reward: 1
+origin:
+  x: 0
+  y: 69
+  z: 0
+spawn_delta: 19
+weapon_material: WOODEN_SWORD
+arrow_get_delay_ticks: 300
+game_time_seconds: 120

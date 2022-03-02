@@ -4,25 +4,17 @@ import me.timwastaken.minecraftparty.managers.GameManager;
 import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
-import me.timwastaken.minecraftparty.models.minigames.AnvilStorm;
-import me.timwastaken.minecraftparty.models.minigames.Lasertag;
-import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
-import me.timwastaken.minecraftparty.models.minigames.MlgRush;
+import me.timwastaken.minecraftparty.models.minigames.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Minecart;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 
@@ -124,6 +116,16 @@ public class GameListener implements Listener {
                 lasertagMinigame.onPlayerDeath(p);
                 lasertagMinigame.givePointToPlayer(damager);
             }
+        } else if (GameManager.getActiveMinigame() instanceof OneInTheChamber oneInTheChamberMinigame && event.getEntity() instanceof Player p && event.getDamager() instanceof Player damager) {
+            if (!oneInTheChamberMinigame.isRunning()) {
+                event.setCancelled(true);
+                return;
+            }
+            if (p.getHealth() - event.getFinalDamage() <= 0) {
+                event.setDamage(0);
+                oneInTheChamberMinigame.onPlayerDeath(p);
+                oneInTheChamberMinigame.givePointToPlayer(damager);
+            }
         }
     }
 
@@ -169,6 +171,25 @@ public class GameListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         ScoreboardSystem.refreshScoreboard(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent event) {
+        if (GameManager.getActiveMinigame() instanceof OneInTheChamber oneInTheChamberMinigame && event.getHitEntity() instanceof Player hitPlayer && event.getEntity().getShooter() instanceof Player shootingPlayer) {
+            event.setCancelled(true);
+            if (!hitPlayer.equals(shootingPlayer)) {
+                oneInTheChamberMinigame.onPlayerDeath(hitPlayer);
+                oneInTheChamberMinigame.givePointToPlayer(shootingPlayer);
+                oneInTheChamberMinigame.cloneArrow(event.getEntity());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+        if (GameManager.getActiveMinigame() instanceof OneInTheChamber oneInTheChamberMinigame && event.getEntity() instanceof Arrow arrow) {
+            arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+        }
     }
 
 }

@@ -35,6 +35,7 @@ public final class MinecraftParty extends JavaPlugin {
         MusicManager.init();
         ScoreboardSystem.init();
         try {
+            ConfigManager.setDebugging(true);
             ConfigManager.init();
         } catch (IOException e) {
             e.printStackTrace();

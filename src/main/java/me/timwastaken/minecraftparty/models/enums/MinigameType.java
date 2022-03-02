@@ -19,7 +19,8 @@ public enum MinigameType {
     MLG_RUSH(ChatColor.GOLD + "" + ChatColor.BOLD + "MLG Rush", "mlg_rush"),
     MUSICAL_CHAIRS(ChatColor.GOLD + "" + ChatColor.BOLD + "Musical Chairs", "musical_chairs"),
     LASERTAG(ChatColor.GOLD + "" + ChatColor.BOLD + "Lasertag", "lasertag"),
-    APPROXIMATE(ChatColor.GOLD + "" + ChatColor.BOLD + "Approximate", "approximate");
+    APPROXIMATE(ChatColor.GOLD + "" + ChatColor.BOLD + "Approximate", "approximate"),
+    ONE_IN_THE_CHAMBER(ChatColor.GOLD + "" + ChatColor.BOLD + "One In The Chamber", "one_in_the_chamber");
 
     private final String displayName;
     private final String alias;
