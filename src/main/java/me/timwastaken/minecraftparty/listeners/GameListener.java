@@ -170,6 +170,8 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if (GameManager.getActiveMinigame() != null)
+            ((GameEventListener) GameManager.getActiveMinigame()).onPlayerJoin(event.getPlayer());
         ScoreboardSystem.refreshScoreboard(event.getPlayer());
     }
 
