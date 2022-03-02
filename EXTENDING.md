@@ -6,7 +6,7 @@ If you want to add your own minigame to the plugin, you have to follow these ste
 
 ## 1. Add your configuration `yml` file
 
-   The configuration file contains attributes about your minigame that get read by the plugin on start. Add your values to a file called `<alias>.yml` where `<alias>` is your plugin name or alias in [snake_case](https://en.wikipedia.org/wiki/Snake_case).
+   The configuration file contains attributes about your minigame that get read by the plugin on start. Add your values to a file called `<alias>.yml` in `src/main/resources` where `<alias>` is your plugin name or alias in [snake_case](https://en.wikipedia.org/wiki/Snake_case).
    
    Required values are:
    
