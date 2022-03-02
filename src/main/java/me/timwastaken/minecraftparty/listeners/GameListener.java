@@ -67,6 +67,7 @@ public class GameListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (GameManager.getActiveMinigame() == null) return;
         if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_BLOCK_BREAKING)) event.setCancelled(true);
+        else if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_BLOCK_DROPS)) event.setDropItems(false);
         if (GameManager.getActiveMinigame() instanceof MlgRush mlgRushMinigame) {
             if (event.getBlock().getType() == mlgRushMinigame.getBedMaterial()) {
                 event.setCancelled(true);

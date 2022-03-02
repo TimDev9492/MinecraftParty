@@ -46,7 +46,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
     private Material bedMaterial;
 
     public MlgRush(Player... players) throws IOException {
-        super(type, List.of(MinigameFlag.ZERO_DAMAGE), players);
+        super(type, List.of(MinigameFlag.ZERO_DAMAGE, MinigameFlag.NO_BLOCK_DROPS), players);
         super.addGameEventListeners(this);
         this.players = players;
         rnd = new Random();

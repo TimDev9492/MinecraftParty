@@ -10,6 +10,7 @@ public enum MinigameFlag {
     NO_PVP,                 // pvp damage gets cancelled
     NO_PVE,                 // damage to non-player entities by players gets cancelled
     NO_BLOCK_BREAKING,      // disables the ability to break blocks
-    NO_BLOCK_PLACEMENT      // disables the ability to place blocks
+    NO_BLOCK_PLACEMENT,     // disables the ability to place blocks
+    NO_BLOCK_DROPS          // disables items from dropping when breaking blocks
 
 }
