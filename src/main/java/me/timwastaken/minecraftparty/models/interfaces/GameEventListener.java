@@ -9,5 +9,6 @@ public interface GameEventListener {
     void onGameEnd();
     void onWorldLoaded();
     void onPlayerLeave(Player p);
+    void onPlayerJoin(Player p);
 
 }

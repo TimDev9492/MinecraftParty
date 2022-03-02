@@ -12,7 +12,6 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.io.IOException;
 import java.util.*;
@@ -192,6 +191,11 @@ public class OneInTheChamber extends Minigame implements GameEventListener {
 
     @Override
     public void onPlayerLeave(Player p) {
+
+    }
+
+    @Override
+    public void onPlayerJoin(Player p) {
 
     }
 

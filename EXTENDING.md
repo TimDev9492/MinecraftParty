@@ -89,6 +89,13 @@ public class MyMinigame extends Minigame implements GameEventListener {
     @Override
     public void onPlayerLeave(Player p) {
         // gets executed when a player quits the server during your game
+        // use this to remove a player from the score list
+    }
+    
+    @Override
+    public void onPlayerJoin(Player p) {
+        // gets executed when a player joins the server while your game is running
+        // use this to add them as a spectator
     }
 
 }

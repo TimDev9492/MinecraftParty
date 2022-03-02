@@ -43,4 +43,9 @@ public class Approximate extends Minigame implements GameEventListener {
         // gets executed when a player quits the server during your game
     }
 
+    @Override
+    public void onPlayerJoin(Player p) {
+
+    }
+
 }

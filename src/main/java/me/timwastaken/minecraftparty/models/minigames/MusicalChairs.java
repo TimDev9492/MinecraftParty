@@ -212,6 +212,11 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
         ingamePlayers.remove(p.getUniqueId());
     }
 
+    @Override
+    public void onPlayerJoin(Player p) {
+
+    }
+
     private String removeExtension(String filePath) {
         // These first few lines the same as Justin's
         File f = new File(filePath);

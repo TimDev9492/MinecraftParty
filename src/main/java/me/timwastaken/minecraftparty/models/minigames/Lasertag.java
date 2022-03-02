@@ -214,6 +214,11 @@ public class Lasertag extends Minigame implements GameEventListener {
     }
 
     @Override
+    public void onPlayerJoin(Player p) {
+
+    }
+
+    @Override
     public List<String> getScoreboardList() {
         List<String> toReturn = new ArrayList<>();
         if (IS_RUNNING) {

@@ -116,5 +116,10 @@ public class AnvilStorm extends Minigame implements GameEventListener {
         ingamePlayers.remove(p.getUniqueId());
     }
 
+    @Override
+    public void onPlayerJoin(Player p) {
+
+    }
+
 
 }

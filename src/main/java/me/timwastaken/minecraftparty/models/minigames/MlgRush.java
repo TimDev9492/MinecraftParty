@@ -174,6 +174,11 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         gamesPlayed.remove(p.getUniqueId());
     }
 
+    @Override
+    public void onPlayerJoin(Player p) {
+
+    }
+
     private void makeSpectator(Player p) {
         p.getInventory().clear();
         p.updateInventory();
