@@ -47,7 +47,7 @@ public class GameListener implements Listener {
                     isPlayerCause = true;
                 }
             }
-            if (!isPlayerCause) {
+            if (!isPlayerCause && p.getHealth() - event.getFinalDamage() <= 0) {
                 event.setDamage(0);
                 duelsMinigame.onPlayerKill(null, p);
             }
@@ -190,6 +190,7 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
+        if (event.getHitBlock() != null && event.getEntity() instanceof Arrow arrow) arrow.remove();
         if (GameManager.getActiveMinigame() instanceof OneInTheChamber oneInTheChamberMinigame && event.getHitEntity() instanceof Player hitPlayer && event.getEntity().getShooter() instanceof Player shootingPlayer) {
             event.setCancelled(true);
             if (!hitPlayer.equals(shootingPlayer)) {

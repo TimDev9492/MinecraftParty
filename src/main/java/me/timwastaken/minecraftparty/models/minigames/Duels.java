@@ -21,8 +21,6 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
 
     private final Random rnd;
 
-    boolean test;
-
     private final HashMap<UUID, Integer> gamesPlayed;
     private final HashMap<UUID, Integer> playerLives;
 

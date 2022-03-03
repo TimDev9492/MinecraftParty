@@ -7,6 +7,7 @@ import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.other.InventoryKit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -78,6 +79,10 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
         for (int slot : playerInv.keySet()) {
             p.getInventory().setItem(slot, getItemStackFromType(playerInv.get(slot)));
         }
+        p.getInventory().setItem(EquipmentSlot.HEAD, currentKit.getHelmet());
+        p.getInventory().setItem(EquipmentSlot.CHEST, currentKit.getChestplate());
+        p.getInventory().setItem(EquipmentSlot.LEGS, currentKit.getLeggings());
+        p.getInventory().setItem(EquipmentSlot.FEET, currentKit.getBoots());
     }
 
     public void resetInventory(UUID id) {
