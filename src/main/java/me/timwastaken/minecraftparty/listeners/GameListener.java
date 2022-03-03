@@ -48,6 +48,7 @@ public class GameListener implements Listener {
                 }
             }
             if (!isPlayerCause) {
+                event.setDamage(0);
                 duelsMinigame.onPlayerKill(null, p);
             }
         }

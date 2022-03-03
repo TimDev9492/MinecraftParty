@@ -21,6 +21,8 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
 
     private final Random rnd;
 
+    boolean test;
+
     private final HashMap<UUID, Integer> gamesPlayed;
     private final HashMap<UUID, Integer> playerLives;
 
@@ -117,6 +119,7 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
         }
         if (!isFighting(killed)) return;
         updateInvLayout(killed);
+        saveLayoutsToDatabase();
         makeSpectator(killed);
         killed.playSound(killed.getLocation(), Sound.ENTITY_CAT_HISS, 1f, 1f);
         removeLife(killed.getUniqueId());
