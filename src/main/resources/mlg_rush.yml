@@ -32,7 +32,4 @@ lives: 2
 reset_depth: 8
 bed_protection_radius: 2.5
 build_height: 4
-block_material: SMOOTH_BASALT
-weapon_material: STICK
-tool_material: WOODEN_PICKAXE
 bed_material: MAGENTA_BED

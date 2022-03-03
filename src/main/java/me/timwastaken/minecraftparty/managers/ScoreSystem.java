@@ -16,7 +16,6 @@ public class ScoreSystem {
 
     public static void addPlayers(Player... players) {
         for (Player player : players) {
-            Bukkit.broadcastMessage("Added " + player.getName() + " to the score system");
             playerScores.put(player.getUniqueId(), 0);
         }
     }

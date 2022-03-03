@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
+import me.timwastaken.minecraftparty.managers.KitManager;
 import me.timwastaken.minecraftparty.managers.NotificationManager;
 import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
@@ -95,30 +96,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         bedMaterial = Material.valueOf(getConfig().getString("bed_material"));
         bedProtectionRadius = getConfig().getDouble("bed_protection_radius");
         startLives = getConfig().getInt("lives");
-        fighterInv = new ItemStack[]{
-                new ItemStack(Material.valueOf(getConfig().getString("weapon_material"))),
-                new ItemStack(Material.valueOf(getConfig().getString("tool_material"))),
-                new ItemStack(Material.valueOf(getConfig().getString("block_material")), 64)
-        };
-        setFallback(new HashMap<>() {{
-            put(0, ItemType.WEAPON);
-            put(1, ItemType.TOOL);
-            put(2, ItemType.BLOCKS);
-        }});
-        setItemMap(new HashMap<>() {{
-            put(ItemType.WEAPON, fighterInv[0]);
-            put(ItemType.TOOL, fighterInv[1]);
-            put(ItemType.BLOCKS, fighterInv[2]);
-        }});
-        ItemStack weapon = fighterInv[0];
-        ItemMeta meta = weapon.getItemMeta();
-        meta.addEnchant(Enchantment.KNOCKBACK, 2, false);
-        weapon.setItemMeta(meta);
-        ItemStack tool = fighterInv[1];
-        meta = tool.getItemMeta();
-        meta.addEnchant(Enchantment.DIG_SPEED, 2, false);
-        meta.setUnbreakable(true);
-        tool.setItemMeta(meta);
+        loadKit(KitManager.getKit(type.getAlias()));
 
         for (Player p : players) {
             gamesPlayed.put(p.getUniqueId(), 0);

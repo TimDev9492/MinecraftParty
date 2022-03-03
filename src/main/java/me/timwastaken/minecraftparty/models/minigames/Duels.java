@@ -10,7 +10,6 @@ import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.other.InventoryKit;
 import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -72,8 +71,7 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
         buildHeight = origin.getBlockY() + getConfig().getInt("build_height") - 1;
         startLives = getConfig().getInt("lives");
         InventoryKit kit = KitManager.getKit("1_18_pvp");
-        setFallback(kit.getFallback());
-        setItemMap(kit.toItemMap());
+        loadKit(kit);
 
         for (Player p : players) {
             gamesPlayed.put(p.getUniqueId(), 0);
@@ -111,12 +109,15 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
 
     public void onPlayerKill(Player by, Player killed) {
         // Add point system
-        if (!isFighting(by) || !isFighting(killed)) return;
-        updateInvLayout(by);
+        if (by != null) {
+            if (!isFighting(by)) return;
+            updateInvLayout(by);
+            makeSpectator(by);
+            by.playSound(by.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
+        }
+        if (!isFighting(killed)) return;
         updateInvLayout(killed);
-        makeSpectator(by);
         makeSpectator(killed);
-        by.playSound(by.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         killed.playSound(killed.getLocation(), Sound.ENTITY_CAT_HISS, 1f, 1f);
         removeLife(killed.getUniqueId());
         ScoreboardSystem.refreshScoreboards();

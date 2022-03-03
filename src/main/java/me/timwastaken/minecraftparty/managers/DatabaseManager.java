@@ -6,9 +6,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.UpdateResult;
+import com.mongodb.lang.Nullable;
 import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.enums.ItemType;
+import me.timwastaken.minecraftparty.models.other.InventoryKit;
 import org.bson.Document;
 
 import java.util.HashMap;
@@ -42,12 +44,16 @@ public class DatabaseManager {
         client.close();
     }
 
-    public static HashMap<Integer, ItemType> getInvLayout(UUID playerId, MinigameType gameType) {
+//    public static HashMap<Integer, ItemType> getInvLayout(UUID playerId, MinigameType gameType) {
+//        return getInvLayout(playerId, gameType, null);
+//    }
+
+    public static HashMap<Integer, ItemType> getInvLayout(UUID playerId, InventoryKit kit) {
         HashMap<Integer, ItemType> slotLayout = new HashMap<>();
         Document filter = new Document("uuid", playerId.toString());
         Document playerLayouts = inv_layouts.find(filter).first();
         if (playerLayouts == null) return null;
-        Document minigameLayout = playerLayouts.get(gameType.getAlias(), Document.class);
+        Document minigameLayout = playerLayouts.get(kit.getAlias(), Document.class);
         if (minigameLayout == null) return null;
         for (Map.Entry<String, Object> slotItem : minigameLayout.entrySet()) {
             int slot = Integer.parseInt(slotItem.getKey());
@@ -57,14 +63,14 @@ public class DatabaseManager {
         return slotLayout;
     }
 
-    public static boolean saveInvLayout(UUID playerId, MinigameType gameType, HashMap<Integer, ItemType> layout) {
+    public static boolean saveInvLayout(UUID playerId, InventoryKit kit, HashMap<Integer, ItemType> layout) {
         Document filter = new Document("uuid", playerId.toString());
 
         Document serializedLayout = new Document();
         layout.forEach((k, v) -> {
             serializedLayout.append(k.toString(), v.toString());
         });
-        Document document = new Document().append(gameType.getAlias(), serializedLayout);
+        Document document = new Document().append(kit.getAlias(), serializedLayout);
         UpdateResult result = inv_layouts.updateOne(filter, new Document("$set", document), new UpdateOptions().upsert(true));
         return result.wasAcknowledged();
     }

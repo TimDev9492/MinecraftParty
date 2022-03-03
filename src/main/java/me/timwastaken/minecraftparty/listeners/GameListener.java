@@ -40,6 +40,17 @@ public class GameListener implements Listener {
             if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_FALL_DAMAGE)) event.setCancelled(true);
             else if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.ZERO_FALL_DAMAGE)) event.setDamage(0);
         }
+        if (GameManager.getActiveMinigame() instanceof Duels duelsMinigame && event.getEntity() instanceof Player p) {
+            boolean isPlayerCause = false;
+            if (event instanceof EntityDamageByEntityEvent enByEnEv) {
+                if (enByEnEv.getDamager() instanceof Player) {
+                    isPlayerCause = true;
+                }
+            }
+            if (!isPlayerCause) {
+                duelsMinigame.onPlayerKill(null, p);
+            }
+        }
     }
 
     @EventHandler
