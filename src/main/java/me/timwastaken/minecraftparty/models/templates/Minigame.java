@@ -9,6 +9,7 @@ import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,6 +26,7 @@ public abstract class Minigame {
     private long whenStarted;
     private boolean isRunning = false;
     protected Location origin;
+    private final ArrayList<Block> placedBlocks;
 
     private final ArrayList<GameEventListener> gameEventListeners;
 
@@ -33,6 +35,7 @@ public abstract class Minigame {
         this.flags = new ArrayList<>(flags);
         this.gameEventListeners = new ArrayList<>();
         this.gameWorldName = type.getWorldName();
+        this.placedBlocks = new ArrayList<>();
     }
 
     public void addGameEventListeners(GameEventListener... listeners) {
@@ -63,6 +66,25 @@ public abstract class Minigame {
     public void unloadWorld() {
         if (!gameWorldName.equals(GameManager.getDefaultWorldName()))
             Bukkit.getServer().unloadWorld(gameWorld, true);
+    }
+
+    public void addPlacedBlock(Block b) {
+        placedBlocks.add(b);
+    }
+
+    public void removePlacedBlock(Block b) {
+        placedBlocks.remove(b);
+    }
+
+    public boolean isPlacedBlock(Block b) {
+        return placedBlocks.contains(b);
+    }
+
+    public void resetMap() {
+        for (int i = placedBlocks.size() - 1; i >= 0; i--) {
+            placedBlocks.get(i).setType(Material.AIR);
+            placedBlocks.remove(i);
+        }
     }
 
     public void startCountdown() {
@@ -119,6 +141,7 @@ public abstract class Minigame {
             p.teleport(GameManager.getOrigin());
             p.setGameMode(GameMode.ADVENTURE);
             p.getInventory().clear();
+            p.setHealth(20);
         });
         unloadWorld();
     }

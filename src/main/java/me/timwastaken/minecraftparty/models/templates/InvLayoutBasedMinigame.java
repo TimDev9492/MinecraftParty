@@ -35,7 +35,6 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
     public void setItemMap(HashMap<ItemType, ItemStack> itemMap) {
         this.itemMap = new ConcurrentHashMap<>(itemMap);
         this.reversedItemMap = computeReversedItemMap(itemMap);
-//        reversedItemMap.forEach((k, v) -> System.out.println("key '" + k + "' -> value '" + v + "'"));
     }
 
     public InvLayoutBasedMinigame(MinigameType type, List<MinigameFlag> flags, Player... players) throws IOException {

@@ -1,26 +1,24 @@
 package me.timwastaken.minecraftparty.models.minigames;
 
 import me.timwastaken.minecraftparty.MinecraftParty;
+import me.timwastaken.minecraftparty.managers.KitManager;
 import me.timwastaken.minecraftparty.managers.NotificationManager;
 import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
-import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
-import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
-import me.timwastaken.minecraftparty.models.enums.ItemType;
+import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
+import me.timwastaken.minecraftparty.models.other.InventoryKit;
+import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.IOException;
 import java.util.*;
 
-public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener {
+public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
 
-    private static final MinigameType type = MinigameType.MLG_RUSH;
+    private static final MinigameType type = MinigameType.DUELS;
 
     private final Random rnd;
 
@@ -29,20 +27,14 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
 
     private final UUID[] currentlyFighting;
     private Location[] fightSpawns;
-    private Location[] bedLocations;
     private Location spectatorSpawn;
-    private ItemStack[] fighterInv;
     private final Player[] players;
 
     private int startLives;
-    private int resetDepth;
-    private int deathY;
     private int buildHeight;
-    private double bedProtectionRadius;
-    private Material bedMaterial;
 
-    public MlgRush(Player... players) throws IOException {
-        super(type, List.of(MinigameFlag.ZERO_DAMAGE, MinigameFlag.NO_BLOCK_DROPS, MinigameFlag.NO_MAP_BREAKING), players);
+    public Duels(Player... players) throws IOException {
+        super(type, List.of(MinigameFlag.NO_BLOCK_DROPS, MinigameFlag.NO_MAP_BREAKING), players);
         super.addGameEventListeners(this);
         this.players = players;
         rnd = new Random();
@@ -51,17 +43,12 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         currentlyFighting = new UUID[2];
     }
 
-    public int getDeathY() {
-        return deathY;
-    }
-
     public boolean isFighting(Player p) {
         return currentlyFighting[0] == p.getUniqueId() || currentlyFighting[1] == p.getUniqueId();
     }
 
     @Override
     public void onGameStart() {
-        deathY = origin.getBlockY() - resetDepth;
         generateNewFightingPlayers();
     }
 
@@ -69,10 +56,6 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
     public void onGameEnd() {
         resetMap();
         saveLayoutsToDatabase();
-    }
-
-    public Material getBedMaterial() {
-        return bedMaterial;
     }
 
     @Override
@@ -83,42 +66,14 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         };
         fightSpawns[0].setYaw((float) getConfig().getDouble("spawn1.yaw"));
         fightSpawns[1].setYaw((float) getConfig().getDouble("spawn2.yaw"));
-        bedLocations = new Location[]{
-                new Location(gameWorld, getConfig().getInt("bed1.x") + 0.5, getConfig().getInt("bed1.y"), getConfig().getInt("bed1.z") + 0.5),
-                new Location(gameWorld, getConfig().getInt("bed2.x") + 0.5, getConfig().getInt("bed2.y"), getConfig().getInt("bed2.z") + 0.5)
-        };
         spectatorSpawn = new Location(gameWorld, getConfig().getInt("spectator_spawn.x") + 0.5, getConfig().getInt("spectator_spawn.y"), getConfig().getInt("spectator_spawn.z") + 0.5);
         spectatorSpawn.setPitch((float) getConfig().getDouble("spectator_spawn.pitch"));
         spectatorSpawn.setYaw((float) getConfig().getDouble("spectator_spawn.yaw"));
-        resetDepth = getConfig().getInt("reset_depth");
         buildHeight = origin.getBlockY() + getConfig().getInt("build_height") - 1;
-        bedMaterial = Material.valueOf(getConfig().getString("bed_material"));
-        bedProtectionRadius = getConfig().getDouble("bed_protection_radius");
         startLives = getConfig().getInt("lives");
-        fighterInv = new ItemStack[]{
-                new ItemStack(Material.valueOf(getConfig().getString("weapon_material"))),
-                new ItemStack(Material.valueOf(getConfig().getString("tool_material"))),
-                new ItemStack(Material.valueOf(getConfig().getString("block_material")), 64)
-        };
-        setFallback(new HashMap<>() {{
-            put(0, ItemType.WEAPON);
-            put(1, ItemType.TOOL);
-            put(2, ItemType.BLOCKS);
-        }});
-        setItemMap(new HashMap<>() {{
-            put(ItemType.WEAPON, fighterInv[0]);
-            put(ItemType.TOOL, fighterInv[1]);
-            put(ItemType.BLOCKS, fighterInv[2]);
-        }});
-        ItemStack weapon = fighterInv[0];
-        ItemMeta meta = weapon.getItemMeta();
-        meta.addEnchant(Enchantment.KNOCKBACK, 2, false);
-        weapon.setItemMeta(meta);
-        ItemStack tool = fighterInv[1];
-        meta = tool.getItemMeta();
-        meta.addEnchant(Enchantment.DIG_SPEED, 2, false);
-        meta.setUnbreakable(true);
-        tool.setItemMeta(meta);
+        InventoryKit kit = KitManager.getKit("1_18_pvp");
+        setFallback(kit.getFallback());
+        setItemMap(kit.toItemMap());
 
         for (Player p : players) {
             gamesPlayed.put(p.getUniqueId(), 0);
@@ -154,25 +109,16 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         p.teleport(spectatorSpawn);
     }
 
-    public void bedBroken(Player by, Block bed) {
+    public void onPlayerKill(Player by, Player killed) {
         // Add point system
-        if (!isFighting(by)) return;
-        Player winner = by, looser;
-        if (by.getUniqueId() == currentlyFighting[0]) {
-            looser = Bukkit.getPlayer(currentlyFighting[1]);
-        } else {
-            looser = Bukkit.getPlayer(currentlyFighting[0]);
-        }
-        if (bed.getLocation().distanceSquared(getSpawn(winner)) < bed.getLocation().distanceSquared(getSpawn(looser))) {
-            return;
-        }
-        updateInvLayout(winner);
-        updateInvLayout(looser);
-        makeSpectator(winner);
-        makeSpectator(looser);
-        winner.playSound(winner.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
-        looser.playSound(looser.getLocation(), Sound.ENTITY_CAT_HISS, 1f, 1f);
-        removeLife(looser.getUniqueId());
+        if (!isFighting(by) || !isFighting(killed)) return;
+        updateInvLayout(by);
+        updateInvLayout(killed);
+        makeSpectator(by);
+        makeSpectator(killed);
+        by.playSound(by.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
+        killed.playSound(killed.getLocation(), Sound.ENTITY_CAT_HISS, 1f, 1f);
+        removeLife(killed.getUniqueId());
         ScoreboardSystem.refreshScoreboards();
         resetMap();
         if (gamesPlayed.keySet().size() > 1) generateNewFightingPlayers();
@@ -181,6 +127,10 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
     public void teleportBack(Player p, boolean update) {
         if (!isFighting(p)) return;
         p.setFallDistance(0);
+        p.getActivePotionEffects().forEach(potionEffect -> {
+            p.removePotionEffect(potionEffect.getType());
+        });
+        p.setHealth(20);
         if (p.getUniqueId() == currentlyFighting[0]) {
             p.teleport(fightSpawns[0]);
         } else {
@@ -224,10 +174,6 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
 
     private void checkEnd() {
         if (gamesPlayed.size() == 1) {
-//            Bukkit.getOnlinePlayers().forEach(p -> {
-//                p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.5f);
-//                p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()).getName(), ChatColor.GRAY + "won the game", 10, 80, 10);
-//            });
             NotificationManager.announceGameWinners(Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()));
             endGame();
         }
@@ -269,21 +215,6 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
 
         teleportBack(p1, false);
         teleportBack(p2, false);
-    }
-
-    public boolean isNearOwnBed(Player player, Block block) {
-        if (!isFighting(player)) return false;
-        Location comp = block.getLocation().add(0.5, 0, 0.5);
-        Location bed;
-        Location spawn;
-        if (player.getUniqueId() == currentlyFighting[0]) {
-            bed = bedLocations[0];
-            spawn = fightSpawns[0];
-        } else {
-            bed = bedLocations[1];
-            spawn = fightSpawns[1];
-        }
-        return bed.distance(comp) <= bedProtectionRadius || spawn.distance(comp) <= bedProtectionRadius;
     }
 
     @Override

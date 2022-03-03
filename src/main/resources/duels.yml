@@ -1,0 +1,25 @@
+reward: 1
+origin:
+  x: 0
+  y: 65
+  z: 0
+world_name: world
+spawn1:
+  x: -15
+  y: 65
+  z: 0
+  yaw: -90
+spawn2:
+  x: 15
+  y: 65
+  z: 0
+  yaw: 90
+spectator_spawn:
+  x: 0
+  y: 100
+  z: 0
+  pitch: 90
+  yaw: 0
+lives: 2
+build_height: 16
+kit_database_path: /home/tim/minecraft/mcparty/var/kits

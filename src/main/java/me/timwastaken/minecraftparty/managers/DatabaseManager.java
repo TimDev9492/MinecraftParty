@@ -48,6 +48,7 @@ public class DatabaseManager {
         Document playerLayouts = inv_layouts.find(filter).first();
         if (playerLayouts == null) return null;
         Document minigameLayout = playerLayouts.get(gameType.getAlias(), Document.class);
+        if (minigameLayout == null) return null;
         for (Map.Entry<String, Object> slotItem : minigameLayout.entrySet()) {
             int slot = Integer.parseInt(slotItem.getKey());
             ItemType type = ItemType.valueOf((String) slotItem.getValue());

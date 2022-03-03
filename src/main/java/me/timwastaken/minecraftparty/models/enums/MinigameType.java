@@ -20,6 +20,7 @@ public enum MinigameType {
     MUSICAL_CHAIRS(ChatColor.GOLD + "" + ChatColor.BOLD + "Musical Chairs", "musical_chairs"),
     LASERTAG(ChatColor.GOLD + "" + ChatColor.BOLD + "Lasertag", "lasertag"),
     APPROXIMATE(ChatColor.GOLD + "" + ChatColor.BOLD + "Approximate", "approximate"),
+    DUELS(ChatColor.GOLD + "" + ChatColor.BOLD + "Duels", "duels"),
     ONE_IN_THE_CHAMBER(ChatColor.GOLD + "" + ChatColor.BOLD + "One In The Chamber", "one_in_the_chamber");
 
     private final String displayName;

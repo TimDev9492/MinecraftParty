@@ -49,10 +49,9 @@ public class GameListener implements Listener {
         if (GameManager.getActiveMinigame() instanceof MlgRush mlgRushMinigame) {
             if (event.getBlockPlaced().getLocation().getBlockY() > mlgRushMinigame.getBuildHeight() || mlgRushMinigame.isNearOwnBed(event.getPlayer(), event.getBlock())) {
                 event.setCancelled(true);
-            } else {
-                mlgRushMinigame.addPlacedBlock(event.getBlockPlaced());
             }
         }
+        if (!event.isCancelled()) GameManager.getActiveMinigame().addPlacedBlock(event.getBlockPlaced());
     }
 
     @EventHandler
@@ -64,8 +63,13 @@ public class GameListener implements Listener {
             if (event.getBlock().getType() == mlgRushMinigame.getBedMaterial()) {
                 event.setCancelled(true);
                 mlgRushMinigame.bedBroken(event.getPlayer(), event.getBlock());
-            } else if (!mlgRushMinigame.isPlacedBlock(event.getBlock())) {
+            }
+        }
+        if (!event.isCancelled()) {
+            if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_MAP_BREAKING) && !GameManager.getActiveMinigame().isPlacedBlock(event.getBlock())) {
                 event.setCancelled(true);
+            } else {
+                GameManager.getActiveMinigame().removePlacedBlock(event.getBlock());
             }
         }
     }
@@ -126,6 +130,11 @@ public class GameListener implements Listener {
                 oneInTheChamberMinigame.onPlayerDeath(p);
                 oneInTheChamberMinigame.givePointToPlayer(damager);
             }
+        } else if (GameManager.getActiveMinigame() instanceof Duels duelsMinigame && event.getEntity() instanceof Player p && event.getDamager() instanceof Player damager) {
+            if (p.getHealth() - event.getFinalDamage() <= 0) {
+                event.setDamage(0);
+                duelsMinigame.onPlayerKill(damager, p);
+            }
         }
     }
 
@@ -151,14 +160,6 @@ public class GameListener implements Listener {
         if (GameManager.getActiveMinigame() == null) return;
         if (GameManager.getActiveMinigame() instanceof MusicalChairs musicalChairsMinigame && event.getEntered() instanceof Player p && event.getVehicle() instanceof Minecart) {
             musicalChairsMinigame.onPlayerEnterMinecart(p);
-        }
-    }
-
-    @EventHandler
-    public void onEntityPickupItem(EntityPickupItemEvent event) {
-        if (GameManager.getActiveMinigame() == null) return;
-        if (GameManager.getActiveMinigame() instanceof MlgRush mlgRushMinigame && event.getEntity() instanceof Player p) {
-            mlgRushMinigame.onPlayerPickupItem(event);
         }
     }
 

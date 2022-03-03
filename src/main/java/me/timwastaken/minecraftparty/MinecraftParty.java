@@ -7,6 +7,7 @@ import me.timwastaken.minecraftparty.listeners.GlobalListener;
 import me.timwastaken.minecraftparty.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -29,10 +30,20 @@ public final class MinecraftParty extends JavaPlugin {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
-        DatabaseManager.init();
-        DatabaseManager.connect();
-        GameManager.init();
-        MusicManager.init();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                DatabaseManager.init();
+                DatabaseManager.connect();
+                GameManager.init();
+                MusicManager.init();
+                try {
+                    KitManager.init();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.runTaskAsynchronously(this);
         ScoreboardSystem.init();
         try {
             ConfigManager.setDebugging(true);
