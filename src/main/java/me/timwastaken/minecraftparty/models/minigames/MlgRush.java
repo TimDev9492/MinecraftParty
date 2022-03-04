@@ -8,13 +8,10 @@ import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
-import me.timwastaken.minecraftparty.models.enums.ItemType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.IOException;
 import java.util.*;
@@ -110,16 +107,20 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
     public void onPlayerLeave(Player p) {
         Player other = currentlyFighting[0] == p.getUniqueId() ? Bukkit.getPlayer(currentlyFighting[1]) : Bukkit.getPlayer(currentlyFighting[0]);
         if (other == null) return;
+        gamesPlayed.remove(p.getUniqueId());
+        playerLives.remove(p.getUniqueId());
         if (isFighting(p)) {
             resetMap();
-            generateNewFightingPlayers();
+            checkEnd();
+            if (gamesPlayed.keySet().size() > 1)
+                generateNewFightingPlayers();
         }
-        gamesPlayed.remove(p.getUniqueId());
+        ScoreboardSystem.refreshScoreboards();
     }
 
     @Override
     public void onPlayerJoin(Player p) {
-
+        makeSpectator(p);
     }
 
     private void makeSpectator(Player p) {

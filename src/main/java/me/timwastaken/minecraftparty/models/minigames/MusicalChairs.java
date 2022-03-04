@@ -32,7 +32,6 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
     private static final MinigameType type = MinigameType.MUSICAL_CHAIRS;
     private final ArrayList<BukkitRunnable> gameLoops;
 
-    private String nbsDirectoryPath;
     private int songBufferSize;
     private int minTicks;
     private int maxTicks;
@@ -138,8 +137,6 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
     }
 
     private void loadSongs() {
-//        File nbsDirectory = new File(nbsDirectoryPath);
-//        filesLeft = new ArrayList<>(Arrays.asList(nbsDirectory.listFiles()));
         filesLeft = MusicManager.getCopyOfFiles();
         songs.clear();
         for (int i = 0; i < songBufferSize; i++) {
@@ -189,7 +186,6 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
 
     @Override
     public void onWorldLoaded() {
-        nbsDirectoryPath = getConfig().getString("nbs_directory");
         songBufferSize = getConfig().getInt("song_buffer_size");
         minTicks = getConfig().getInt("min_ticks");
         maxTicks = getConfig().getInt("max_ticks");
@@ -210,6 +206,7 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
     @Override
     public void onPlayerLeave(Player p) {
         ingamePlayers.remove(p.getUniqueId());
+        checkGameEnd();
     }
 
     @Override

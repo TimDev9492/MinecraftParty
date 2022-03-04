@@ -85,16 +85,20 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
     public void onPlayerLeave(Player p) {
         Player other = currentlyFighting[0] == p.getUniqueId() ? Bukkit.getPlayer(currentlyFighting[1]) : Bukkit.getPlayer(currentlyFighting[0]);
         if (other == null) return;
+        gamesPlayed.remove(p.getUniqueId());
+        playerLives.remove(p.getUniqueId());
         if (isFighting(p)) {
             resetMap();
-            generateNewFightingPlayers();
+            checkEnd();
+            if (gamesPlayed.keySet().size() > 1)
+                generateNewFightingPlayers();
         }
-        gamesPlayed.remove(p.getUniqueId());
+        ScoreboardSystem.refreshScoreboards();
     }
 
     @Override
     public void onPlayerJoin(Player p) {
-
+        makeSpectator(p);
     }
 
     private void makeSpectator(Player p) {

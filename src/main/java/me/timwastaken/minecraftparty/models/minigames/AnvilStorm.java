@@ -114,11 +114,17 @@ public class AnvilStorm extends Minigame implements GameEventListener {
     @Override
     public void onPlayerLeave(Player p) {
         ingamePlayers.remove(p.getUniqueId());
+        if (ingamePlayers.size() == 1) {
+            NotificationManager.announceGameWinners(Bukkit.getPlayer(ingamePlayers.get(0)));
+        }
     }
 
     @Override
     public void onPlayerJoin(Player p) {
-
+        p.getInventory().clear();
+        p.setHealth(20);
+        p.setGameMode(GameMode.SPECTATOR);
+        p.teleport(origin);
     }
 
 

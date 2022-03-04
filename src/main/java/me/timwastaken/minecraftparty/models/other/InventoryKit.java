@@ -48,18 +48,22 @@ public class InventoryKit {
     }
 
     public ItemStack getHelmet() {
+        if (armor.size() < 1) return null;
         return armor.get(0).toItemStack();
     }
 
     public ItemStack getChestplate() {
+        if (armor.size() < 2) return null;
         return armor.get(1).toItemStack();
     }
 
     public ItemStack getLeggings() {
+        if (armor.size() < 3) return null;
         return armor.get(2).toItemStack();
     }
 
     public ItemStack getBoots() {
+        if (armor.size() < 4) return null;
         return armor.get(3).toItemStack();
     }
 

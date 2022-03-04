@@ -23,7 +23,7 @@ public class Lasertag extends Minigame implements GameEventListener {
     private static final MinigameType type = MinigameType.LASERTAG;
     private final ArrayList<BukkitRunnable> gameLoops;
     private Random random;
-    private final Player[] players;
+    private final ArrayList<Player> players;
 
     private double hitDamage;
     private Material gunMaterial;
@@ -38,7 +38,7 @@ public class Lasertag extends Minigame implements GameEventListener {
         super(type, List.of(MinigameFlag.NO_FALL_DAMAGE, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT));
         super.addGameEventListeners(this);
         this.gameLoops = new ArrayList<>();
-        this.players = players;
+        this.players = (ArrayList<Player>) Arrays.asList(players);
         this.points = new HashMap<>();
         this.lastTimeFired = new ConcurrentHashMap<>();
         for (Player p : players) {
@@ -186,7 +186,7 @@ public class Lasertag extends Minigame implements GameEventListener {
     public void onGameEnd() {
         IS_RUNNING = false;
         gameLoops.forEach(BukkitRunnable::cancel);
-        Arrays.stream(players).forEach(p -> p.getInventory().clear());
+        players.forEach(p -> p.getInventory().clear());
         addFlag(MinigameFlag.NO_PVP);
     }
 
@@ -210,12 +210,17 @@ public class Lasertag extends Minigame implements GameEventListener {
 
     @Override
     public void onPlayerLeave(Player p) {
-
+        players.remove(p);
+        points.remove(p);
+        ScoreboardSystem.refreshScoreboards();
     }
 
     @Override
     public void onPlayerJoin(Player p) {
-
+        p.getInventory().clear();
+        p.setHealth(20);
+        p.setGameMode(GameMode.SPECTATOR);
+        p.teleport(origin);
     }
 
     @Override
