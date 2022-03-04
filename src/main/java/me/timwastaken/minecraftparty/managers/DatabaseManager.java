@@ -44,10 +44,6 @@ public class DatabaseManager {
         client.close();
     }
 
-//    public static HashMap<Integer, ItemType> getInvLayout(UUID playerId, MinigameType gameType) {
-//        return getInvLayout(playerId, gameType, null);
-//    }
-
     public static HashMap<Integer, ItemType> getInvLayout(UUID playerId, InventoryKit kit) {
         HashMap<Integer, ItemType> slotLayout = new HashMap<>();
         Document filter = new Document("uuid", playerId.toString());

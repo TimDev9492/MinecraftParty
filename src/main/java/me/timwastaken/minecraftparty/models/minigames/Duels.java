@@ -70,7 +70,7 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
         spectatorSpawn.setYaw((float) getConfig().getDouble("spectator_spawn.yaw"));
         buildHeight = origin.getBlockY() + getConfig().getInt("build_height") - 1;
         startLives = getConfig().getInt("lives");
-        InventoryKit kit = KitManager.getKit("1_18_pvp");
+        InventoryKit kit = KitManager.getKit("uhc");
         loadKit(kit);
 
         for (Player p : players) {

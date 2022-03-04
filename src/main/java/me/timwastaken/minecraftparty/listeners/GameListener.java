@@ -11,9 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
@@ -64,6 +62,26 @@ public class GameListener implements Listener {
             }
         }
         if (!event.isCancelled()) GameManager.getActiveMinigame().addPlacedBlock(event.getBlockPlaced());
+    }
+
+    @EventHandler
+    public void onBlockForm(BlockFormEvent event) {
+        GameManager.getActiveMinigame().addPlacedBlock(event.getBlock());
+    }
+
+    @EventHandler
+    public void onBlockFromTo(BlockFromToEvent event) {
+        GameManager.getActiveMinigame().addPlacedBlock(event.getToBlock());
+    }
+
+    @EventHandler
+    public void onPlayerBucketEmptly(PlayerBucketEmptyEvent event) {
+        GameManager.getActiveMinigame().addPlacedBlock(event.getBlock());
+    }
+
+    @EventHandler
+    public void onPlayerBucketFill(PlayerBucketFillEvent event) {
+        GameManager.getActiveMinigame().removePlacedBlock(event.getBlock());
     }
 
     @EventHandler

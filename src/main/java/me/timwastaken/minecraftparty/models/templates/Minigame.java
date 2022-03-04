@@ -69,7 +69,8 @@ public abstract class Minigame {
     }
 
     public void addPlacedBlock(Block b) {
-        placedBlocks.add(b);
+        if (!placedBlocks.contains(b))
+            placedBlocks.add(b);
     }
 
     public void removePlacedBlock(Block b) {

@@ -105,7 +105,6 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
                 ItemType connectedType = entry.getValue();
                 if (!layout.containsValue(connectedType) && areSimilar(current, stack)) {
                     layout.put(i, connectedType);
-//                    System.out.println("updated " + p.getName() + ": " + i + " -> " + connectedType);
                 }
             }
         }

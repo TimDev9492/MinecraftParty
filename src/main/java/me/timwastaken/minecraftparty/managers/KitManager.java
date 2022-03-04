@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.managers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.timwastaken.minecraftparty.MinecraftParty;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.other.InventoryKit;
 
@@ -13,7 +14,7 @@ public class KitManager {
     private static HashMap<String, InventoryKit> inventoryKits;
 
     public static void init() throws IOException {
-        inventoryKits = loadKitsFromJson(ConfigManager.getConfig(MinigameType.DUELS.getAlias()).getString("kit_database_path"));
+        inventoryKits = loadKitsFromJson(MinecraftParty.getInstance().getConfig().getString("kit_database_path"));
     }
 
     private static HashMap<String, InventoryKit> loadKitsFromJson(String directory) throws IOException {

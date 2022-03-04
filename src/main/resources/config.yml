@@ -12,3 +12,4 @@ default_world:
     x: 0
     y: 65
     z: 0
+kit_database_path: /home/tim/minecraft/mcparty/var/kits
