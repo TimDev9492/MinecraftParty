@@ -1,5 +1,6 @@
 package me.timwastaken.minecraftparty;
 
+import me.timwastaken.minecraftparty.commands.InventoryCommand;
 import me.timwastaken.minecraftparty.commands.MinigameCommand;
 import me.timwastaken.minecraftparty.commands.MusicCommand;
 import me.timwastaken.minecraftparty.listeners.GameListener;
@@ -39,6 +40,7 @@ public final class MinecraftParty extends JavaPlugin {
                 MusicManager.init();
                 try {
                     KitManager.init();
+                    InvGuiManager.init();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -54,9 +56,11 @@ public final class MinecraftParty extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new GlobalListener(), this);
         Bukkit.getPluginManager().registerEvents(new GameListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InvGuiManager(), this);
 
         getCommand("minigame").setExecutor(new MinigameCommand());
         getCommand("music").setExecutor(new MusicCommand());
+        getCommand("inventory").setExecutor(new InventoryCommand());
     }
 
     @Override

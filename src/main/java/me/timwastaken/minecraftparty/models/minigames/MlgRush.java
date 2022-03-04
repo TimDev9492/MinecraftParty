@@ -69,7 +69,6 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
     @Override
     public void onGameEnd() {
         resetMap();
-        saveLayoutsToDatabase();
     }
 
     public Material getBedMaterial() {
@@ -112,8 +111,6 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         Player other = currentlyFighting[0] == p.getUniqueId() ? Bukkit.getPlayer(currentlyFighting[1]) : Bukkit.getPlayer(currentlyFighting[0]);
         if (other == null) return;
         if (isFighting(p)) {
-            updateInvLayout(other);
-            updateInvLayout(p);
             resetMap();
             generateNewFightingPlayers();
         }
@@ -144,8 +141,6 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         if (bed.getLocation().distanceSquared(getSpawn(winner)) < bed.getLocation().distanceSquared(getSpawn(looser))) {
             return;
         }
-        updateInvLayout(winner);
-        updateInvLayout(looser);
         makeSpectator(winner);
         makeSpectator(looser);
         winner.playSound(winner.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
@@ -156,7 +151,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         if (gamesPlayed.keySet().size() > 1) generateNewFightingPlayers();
     }
 
-    public void teleportBack(Player p, boolean update) {
+    public void teleportBack(Player p) {
         if (!isFighting(p)) return;
         p.setFallDistance(0);
         if (p.getUniqueId() == currentlyFighting[0]) {
@@ -165,9 +160,6 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
             p.teleport(fightSpawns[1]);
         }
         p.setGameMode(GameMode.SURVIVAL);
-        if (update) {
-            updateInvLayout(p);
-        }
         resetInventory(p);
     }
 
@@ -202,10 +194,6 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
 
     private void checkEnd() {
         if (gamesPlayed.size() == 1) {
-//            Bukkit.getOnlinePlayers().forEach(p -> {
-//                p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.5f);
-//                p.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()).getName(), ChatColor.GRAY + "won the game", 10, 80, 10);
-//            });
             NotificationManager.announceGameWinners(Bukkit.getPlayer(gamesPlayed.keySet().iterator().next()));
             endGame();
         }
@@ -245,8 +233,8 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
         Player p1 = Bukkit.getPlayer(currentlyFighting[0]);
         Player p2 = Bukkit.getPlayer(currentlyFighting[1]);
 
-        teleportBack(p1, false);
-        teleportBack(p2, false);
+        teleportBack(p1);
+        teleportBack(p2);
     }
 
     public boolean isNearOwnBed(Player player, Block block) {

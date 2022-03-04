@@ -54,7 +54,6 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
     @Override
     public void onGameEnd() {
         resetMap();
-        saveLayoutsToDatabase();
     }
 
     @Override
@@ -87,8 +86,6 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
         Player other = currentlyFighting[0] == p.getUniqueId() ? Bukkit.getPlayer(currentlyFighting[1]) : Bukkit.getPlayer(currentlyFighting[0]);
         if (other == null) return;
         if (isFighting(p)) {
-            updateInvLayout(other);
-            updateInvLayout(p);
             resetMap();
             generateNewFightingPlayers();
         }
@@ -111,13 +108,10 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
         // Add point system
         if (by != null) {
             if (!isFighting(by)) return;
-            updateInvLayout(by);
             makeSpectator(by);
             by.playSound(by.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         }
         if (!isFighting(killed)) return;
-        updateInvLayout(killed);
-        saveLayoutsToDatabase();
         makeSpectator(killed);
         killed.playSound(killed.getLocation(), Sound.ENTITY_CAT_HISS, 1f, 1f);
         removeLife(killed.getUniqueId());
@@ -126,7 +120,7 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
         if (gamesPlayed.keySet().size() > 1) generateNewFightingPlayers();
     }
 
-    public void teleportBack(Player p, boolean update) {
+    public void teleportBack(Player p) {
         if (!isFighting(p)) return;
         p.setFallDistance(0);
         p.getActivePotionEffects().forEach(potionEffect -> {
@@ -139,19 +133,7 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
             p.teleport(fightSpawns[1]);
         }
         p.setGameMode(GameMode.SURVIVAL);
-        if (update) {
-            updateInvLayout(p);
-        }
         resetInventory(p);
-    }
-
-    private Location getSpawn(Player p) {
-        if (!isFighting(p)) return null;
-        if (p.getUniqueId() == currentlyFighting[0]) {
-            return fightSpawns[0];
-        } else {
-            return fightSpawns[1];
-        }
     }
 
     private void removeLife(UUID uuid) {
@@ -215,8 +197,8 @@ public class Duels extends InvLayoutBasedMinigame implements GameEventListener {
         Player p1 = Bukkit.getPlayer(currentlyFighting[0]);
         Player p2 = Bukkit.getPlayer(currentlyFighting[1]);
 
-        teleportBack(p1, false);
-        teleportBack(p2, false);
+        teleportBack(p1);
+        teleportBack(p2);
     }
 
     @Override

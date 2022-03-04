@@ -115,7 +115,7 @@ public class GameListener implements Listener {
         if (GameManager.getActiveMinigame() == null) return;
         if (GameManager.getActiveMinigame() instanceof MlgRush mlgRushMinigame) {
             if (mlgRushMinigame.isFighting(event.getPlayer()) && event.getTo().getBlockY() <= mlgRushMinigame.getDeathY()) {
-                mlgRushMinigame.teleportBack(event.getPlayer(), true);
+                mlgRushMinigame.teleportBack(event.getPlayer());
             }
         }
     }
