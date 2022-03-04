@@ -4,4 +4,7 @@ origin:
   x: 0
   y: 65
   z: 0
-value1: 42
+rounds: 5
+questions:
+  - ['How long is Jannik's dick (mm)?', 2]
+  - ['How high is Jannik's IQ', 25]
