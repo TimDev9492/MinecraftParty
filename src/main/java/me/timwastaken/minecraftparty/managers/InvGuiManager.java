@@ -156,10 +156,11 @@ public class InvGuiManager implements Listener {
             for (Map.Entry<ItemType, ItemStack> entry : itemMap.entrySet()) {
                 ItemStack stack = entry.getValue();
                 ItemType type = entry.getKey();
-                if (areSimilarWithCount(stack, content)) {
+                if (areSimilarWithCount(stack, content) && !layout.containsValue(type)) {
                     int translatedSlot = i == 0 ? 40 : (i > 35 ? (i + 9) % customInv.getSize() : i);
                     System.out.println(translatedSlot + " -> " + type);
                     layout.put(translatedSlot, type);
+                    break;
                 }
             }
         }
