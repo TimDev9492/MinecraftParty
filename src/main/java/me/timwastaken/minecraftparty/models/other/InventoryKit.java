@@ -1,13 +1,8 @@
 package me.timwastaken.minecraftparty.models.other;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import me.timwastaken.minecraftparty.models.enums.ItemType;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +61,10 @@ public class InventoryKit {
 
     public ItemStack getBoots() {
         return armor.get(3).toItemStack();
+    }
+
+    public String getName() {
+        return name;
     }
 
 }

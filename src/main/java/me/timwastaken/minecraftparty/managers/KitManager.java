@@ -34,4 +34,8 @@ public class KitManager {
         return inventoryKits.get(alias);
     }
 
+    public static HashMap<String, InventoryKit> getInventoryKits() {
+        return inventoryKits;
+    }
+
 }

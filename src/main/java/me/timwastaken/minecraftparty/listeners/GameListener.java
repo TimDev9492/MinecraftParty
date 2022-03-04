@@ -60,6 +60,10 @@ public class GameListener implements Listener {
             if (event.getBlockPlaced().getLocation().getBlockY() > mlgRushMinigame.getBuildHeight() || mlgRushMinigame.isNearOwnBed(event.getPlayer(), event.getBlock())) {
                 event.setCancelled(true);
             }
+        } else if (GameManager.getActiveMinigame() instanceof Duels duelsMinigame) {
+            if (event.getBlockPlaced().getLocation().getBlockY() > duelsMinigame.getBuildHeight()) {
+                event.setCancelled(true);
+            }
         }
         if (!event.isCancelled()) GameManager.getActiveMinigame().addPlacedBlock(event.getBlockPlaced());
     }
@@ -115,7 +119,7 @@ public class GameListener implements Listener {
         if (GameManager.getActiveMinigame() == null) return;
         if (GameManager.getActiveMinigame() instanceof MlgRush mlgRushMinigame) {
             if (mlgRushMinigame.isFighting(event.getPlayer()) && event.getTo().getBlockY() <= mlgRushMinigame.getDeathY()) {
-                mlgRushMinigame.teleportBack(event.getPlayer(), true);
+                mlgRushMinigame.teleportBack(event.getPlayer());
             }
         }
     }

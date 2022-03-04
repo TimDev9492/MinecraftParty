@@ -17,3 +17,8 @@ commands:
   music:
     description: Lets players play music
     usage: music <play|stop|toggle> <nbs_file_name>
+  inventory:
+    description: utility for arranging inventory layouts
+    aliases:
+      - inv
+      - layout

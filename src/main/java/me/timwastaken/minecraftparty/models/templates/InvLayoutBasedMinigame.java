@@ -21,7 +21,7 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
     private ConcurrentHashMap<ItemType, ItemStack> itemMap;
     private ConcurrentHashMap<ItemStack, ItemType> reversedItemMap;
     private InventoryKit currentKit;
-    private Player[] players;
+    private final Player[] players;
 
     public void loadKit(InventoryKit kit) {
         currentKit = kit;
@@ -40,20 +40,11 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
 
     private void setItemMap(HashMap<ItemType, ItemStack> itemMap) {
         this.itemMap = new ConcurrentHashMap<>(itemMap);
-        this.reversedItemMap = computeReversedItemMap(itemMap);
     }
 
     public InvLayoutBasedMinigame(MinigameType type, List<MinigameFlag> flags, Player... players) throws IOException {
         super(type, flags);
         this.players = players;
-    }
-
-    private ConcurrentHashMap<ItemStack, ItemType> computeReversedItemMap(HashMap<ItemType, ItemStack> itemMap) {
-        ConcurrentHashMap<ItemStack, ItemType> reversed = new ConcurrentHashMap<>();
-        for (ItemType type : itemMap.keySet()) {
-            reversed.put(itemMap.get(type), type);
-        }
-        return reversed;
     }
 
     private HashMap<Integer, ItemType> loadInventoryLayout(UUID id) {
@@ -93,37 +84,6 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
 
     private ItemStack getItemStackFromType(ItemType itemType) {
         return itemMap.get(itemType);
-    }
-
-    protected void updateInvLayout(Player p) {
-        HashMap<Integer, ItemType> layout = new HashMap<>();
-        for (int i = 0; i < p.getInventory().getContents().length; i++) {
-            ItemStack current = p.getInventory().getItem(i);
-            if (current == null) continue;
-            for (Map.Entry<ItemStack, ItemType> entry : reversedItemMap.entrySet()) {
-                ItemStack stack = entry.getKey();
-                ItemType connectedType = entry.getValue();
-                if (!layout.containsValue(connectedType) && areSimilar(current, stack)) {
-                    layout.put(i, connectedType);
-                }
-            }
-        }
-        if (!layout.isEmpty()) {
-            playerInventoryLayouts.put(p.getUniqueId(), layout);
-        }
-    }
-
-    private boolean areSimilar(ItemStack stack1, ItemStack stack2) {
-        if (stack1.getType() != stack2.getType()) return false;
-        return stack1.getItemMeta().getDisplayName().equals(stack2.getItemMeta().getDisplayName());
-    }
-
-    public boolean saveLayoutToDatabase(Player p, InventoryKit kit) {
-        return DatabaseManager.saveInvLayout(p.getUniqueId(), kit, playerInventoryLayouts.get(p.getUniqueId()));
-    }
-
-    public void saveLayoutsToDatabase() {
-        playerInventoryLayouts.forEach((uuid, map) -> DatabaseManager.saveInvLayout(uuid, currentKit, map));
     }
 
 }
