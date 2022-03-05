@@ -1,10 +1,13 @@
 package me.timwastaken.minecraftparty.managers;
 
+import com.xxmicloxx.NoteBlockAPI.model.Playlist;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
+import com.xxmicloxx.NoteBlockAPI.model.SoundCategory;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import me.timwastaken.minecraftparty.MinecraftParty;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -59,7 +62,11 @@ public class MusicManager {
         if (songFile != null) {
             Song song = NBSDecoder.parse(songFile);
             if (isPlaying() || hasSongLoaded()) radioPlayer.setPlaying(false);
-            radioPlayer = new RadioSongPlayer(song);
+            if (radioPlayer == null) {
+                radioPlayer = new RadioSongPlayer(song);
+                radioPlayer.setCategory(SoundCategory.RECORDS);
+            } else
+                radioPlayer.setPlaylist(new Playlist(song));
             Bukkit.getOnlinePlayers().forEach(radioPlayer::addPlayer);
             radioPlayer.setPlaying(true);
             IS_PLAYING = true;
@@ -81,6 +88,18 @@ public class MusicManager {
 
     public static boolean hasSongLoaded() {
         return radioPlayer != null && radioPlayer.getSong() != null;
+    }
+
+    public static void setVolume(byte volume) {
+        radioPlayer.setVolume((byte) Math.min(Math.max(0, volume), 100));
+    }
+
+    public static void togglePlayerMute(Player p) {
+        if (radioPlayer.getPlayerUUIDs().contains(p.getUniqueId())) {
+            radioPlayer.removePlayer(p.getUniqueId());
+        } else {
+            radioPlayer.addPlayer(p.getUniqueId());
+        }
     }
 
 }

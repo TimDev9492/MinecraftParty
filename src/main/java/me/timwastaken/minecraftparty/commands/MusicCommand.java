@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
@@ -50,6 +51,19 @@ public class MusicCommand implements TabExecutor {
                 } else {
                     MusicManager.toggleMusic();
                 }
+            } else if (operation.equals("togglemute")) {
+                if (sender instanceof Player p) {
+                    MusicManager.togglePlayerMute(p);
+                } else
+                    sender.sendMessage(ChatColor.RED + "You need to be a player to use this operation");
+            } else if (operation.equals("volume")) {
+                if (args.length != 2) return false;
+                try {
+                    byte volume = Byte.parseByte(args[1]);
+                    MusicManager.setVolume(volume);
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(ChatColor.RED + "Invalid number");
+                }
             } else {
                 sender.sendMessage(ChatColor.RED + "Unsupported operation");
                 return false;
@@ -65,6 +79,8 @@ public class MusicCommand implements TabExecutor {
             completions.add("play");
             completions.add("toggle");
             completions.add("stop");
+            completions.add("togglemute");
+            completions.add("volume");
         } else if (args.length >= 2) {
             if (args[0].equals("play")) {
                 StringBuilder stringBuilder = new StringBuilder();

@@ -16,7 +16,7 @@ commands:
       - mg
   music:
     description: Lets players play music
-    usage: music <play|stop|toggle> <nbs_file_name>
+    usage: music <play|stop|toggle|togglemute|volume> <nbs_file_name|volume>
   inventory:
     description: utility for arranging inventory layouts
     aliases:
