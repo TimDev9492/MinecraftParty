@@ -3,13 +3,19 @@ package me.timwastaken.minecraftparty.commands;
 import me.timwastaken.minecraftparty.managers.GameManager;
 import me.timwastaken.minecraftparty.managers.MusicManager;
 import me.timwastaken.minecraftparty.models.templates.MusicalMinigame;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MusicCommand implements TabExecutor {
 
@@ -19,7 +25,7 @@ public class MusicCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "You can't use this command while a musical minigame is running!");
             return true; // return true to prevent usage help
         }
-        if (args.length == 0 ||(!args[0].equals("play") && args.length > 2)) {
+        if (args.length == 0 || (!args[0].equals("play") && args.length > 2)) {
             return false;
         } else {
             String operation = args[0];
@@ -54,18 +60,32 @@ public class MusicCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> completions = null;
+        List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            completions = new ArrayList<>();
             completions.add("play");
             completions.add("toggle");
             completions.add("stop");
-        }
-        else if (args.length == 2) {
-            if (args[0].equals("play"))
-                completions = MusicManager.getFileNames();
+        } else if (args.length >= 2) {
+            if (args[0].equals("play")) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 1; i < args.length; i++) {
+                    stringBuilder.append(args[i]).append(" ");
+                }
+                String searchTerm = stringBuilder.toString().trim();
+                completions = search(searchTerm, MusicManager.getFileNames());
+            }
         }
         return completions;
+    }
+
+    private List<String> search(String term, List<String> strings) {
+        List<String> hits = new ArrayList<>();
+        strings.forEach(str -> {
+            if (StringUtil.startsWithIgnoreCase(str, term)) {
+                hits.add(str);
+            }
+        });
+        return hits;
     }
 
 }
