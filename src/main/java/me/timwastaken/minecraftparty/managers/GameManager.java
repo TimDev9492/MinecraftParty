@@ -75,6 +75,9 @@ public class GameManager {
                 case ONE_IN_THE_CHAMBER -> {
                     activeMinigame = new OneInTheChamber(players);
                 }
+                case MAZE_RUNNER -> {
+                    activeMinigame = new MazeRunner(players);
+                }
                 default -> successful = false;
             }
             if (successful) {

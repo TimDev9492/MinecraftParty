@@ -21,7 +21,8 @@ public enum MinigameType {
     LASERTAG(ChatColor.GOLD + "" + ChatColor.BOLD + "Lasertag", "lasertag"),
     APPROXIMATE(ChatColor.GOLD + "" + ChatColor.BOLD + "Approximate", "approximate"),
     DUELS(ChatColor.GOLD + "" + ChatColor.BOLD + "Duels", "duels"),
-    ONE_IN_THE_CHAMBER(ChatColor.GOLD + "" + ChatColor.BOLD + "One In The Chamber", "one_in_the_chamber");
+    ONE_IN_THE_CHAMBER(ChatColor.GOLD + "" + ChatColor.BOLD + "One In The Chamber", "one_in_the_chamber"),
+    MAZE_RUNNER(ChatColor.GOLD + "" + ChatColor.BOLD + "Maze Runner", "maze_runner");
 
     private final String displayName;
     private final String alias;

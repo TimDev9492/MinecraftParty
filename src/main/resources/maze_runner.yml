@@ -1,0 +1,9 @@
+world_name: world
+reward: 1
+origin:
+  x: 0
+  y: 65
+  z: 0
+wall_material: AZALEA_LEAVES
+maze_size: 5
+game_time_seconds: 120
