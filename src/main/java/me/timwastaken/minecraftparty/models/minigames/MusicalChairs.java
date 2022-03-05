@@ -47,7 +47,7 @@ public class MusicalChairs extends MusicalMinigame implements GameEventListener 
     private RadioSongPlayer radio;
 
     public MusicalChairs(Player... players) throws IOException {
-        super(type, List.of(MinigameFlag.NO_PVP, MinigameFlag.NO_DAMAGE, MinigameFlag.NO_PVE, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT));
+        super(type, List.of(MinigameFlag.NO_PVP, MinigameFlag.NO_DAMAGE, MinigameFlag.NO_PVE, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT), players);
         super.addGameEventListeners(this);
 
         existingMinecarts = new ArrayList<>();

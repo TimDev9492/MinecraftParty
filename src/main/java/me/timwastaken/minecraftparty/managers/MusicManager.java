@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class MusicManager {
 
@@ -65,9 +67,14 @@ public class MusicManager {
             if (radioPlayer == null) {
                 radioPlayer = new RadioSongPlayer(song);
                 radioPlayer.setCategory(SoundCategory.RECORDS);
-            } else
-                radioPlayer.setPlaylist(new Playlist(song));
-            Bukkit.getOnlinePlayers().forEach(radioPlayer::addPlayer);
+                Bukkit.getOnlinePlayers().forEach(radioPlayer::addPlayer);
+            } else {
+                byte vol = radioPlayer.getVolume();
+                Set<UUID> uuids = radioPlayer.getPlayerUUIDs();
+                radioPlayer = new RadioSongPlayer(song);
+                radioPlayer.setVolume(vol);
+                uuids.forEach(uuid -> radioPlayer.addPlayer(uuid));
+            }
             radioPlayer.setPlaying(true);
             IS_PLAYING = true;
         }
@@ -99,6 +106,12 @@ public class MusicManager {
             radioPlayer.removePlayer(p.getUniqueId());
         } else {
             radioPlayer.addPlayer(p.getUniqueId());
+        }
+    }
+
+    public static void addPlayers(Player... players) {
+        for (Player player : players) {
+            radioPlayer.addPlayer(player.getUniqueId());
         }
     }
 

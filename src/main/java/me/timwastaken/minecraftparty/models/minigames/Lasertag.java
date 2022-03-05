@@ -38,7 +38,7 @@ public class Lasertag extends Minigame implements GameEventListener {
         super(type, List.of(MinigameFlag.NO_FALL_DAMAGE, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT));
         super.addGameEventListeners(this);
         this.gameLoops = new ArrayList<>();
-        this.players = (ArrayList<Player>) Arrays.asList(players);
+        this.players = new ArrayList<>(Arrays.asList(players));
         this.points = new HashMap<>();
         this.lastTimeFired = new ConcurrentHashMap<>();
         for (Player p : players) {

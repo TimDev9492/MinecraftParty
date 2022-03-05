@@ -117,10 +117,12 @@ public class InvGuiManager implements Listener {
         playerInvLayout.forEach((slot, itemType) -> {
             int translatedSlot = slot == 40 ? 0 : (slot < 9 ? (slot - 9 + customInv.getSize()) % customInv.getSize() : slot);
             ItemStack itemStack = itemMap.get(itemType);
-            ItemMeta meta = itemStack.getItemMeta();
-            meta.setLore(List.of("."));
-            itemStack.setItemMeta(meta);
-            customInv.setItem(translatedSlot, itemStack);
+            if (itemStack != null) {
+                ItemMeta meta = itemStack.getItemMeta();
+                meta.setLore(List.of("."));
+                itemStack.setItemMeta(meta);
+                customInv.setItem(translatedSlot, itemStack);
+            }
         });
         return customInv;
     }
