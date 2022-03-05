@@ -86,4 +86,9 @@ public abstract class InvLayoutBasedMinigame extends Minigame {
         return itemMap.get(itemType);
     }
 
+    public void reloadPlayerInventory(Player p) {
+        if (playerInventoryLayouts.containsKey(p.getUniqueId()))
+            playerInventoryLayouts.put(p.getUniqueId(), loadInventoryLayout(p.getUniqueId()));
+    }
+
 }

@@ -2,6 +2,7 @@ package me.timwastaken.minecraftparty.managers;
 
 import me.timwastaken.minecraftparty.models.enums.ItemType;
 import me.timwastaken.minecraftparty.models.other.InventoryKit;
+import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -145,6 +146,9 @@ public class InvGuiManager implements Listener {
         p.closeInventory();
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 2f);
         p.sendMessage(ChatColor.GREEN + "Inventory layout saved successfully!");
+        if (GameManager.getActiveMinigame() instanceof InvLayoutBasedMinigame invLayoutBasedMinigame) {
+            invLayoutBasedMinigame.reloadPlayerInventory(p);
+        }
     }
 
     private static HashMap<Integer, ItemType> getLayoutFromInv(Inventory customInv, InventoryKit kit) {
