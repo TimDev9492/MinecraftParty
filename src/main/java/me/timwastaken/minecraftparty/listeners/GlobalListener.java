@@ -1,6 +1,7 @@
 package me.timwastaken.minecraftparty.listeners;
 
 import me.timwastaken.minecraftparty.managers.GameManager;
+import org.bukkit.GameRule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +12,7 @@ public class GlobalListener implements Listener {
 
     @EventHandler
     public void onWorldLoaded(WorldLoadEvent event) {
+        event.getWorld().setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
         if (event.getWorld().getName().equals(GameManager.getDefaultWorldName())) {
             GameManager.setDefaultWorld(event.getWorld());
         }

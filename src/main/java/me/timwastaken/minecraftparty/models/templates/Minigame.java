@@ -139,6 +139,7 @@ public abstract class Minigame {
 
     private void closeWorld() {
         Bukkit.getOnlinePlayers().forEach(p -> {
+            p.setFallDistance(0);
             p.teleport(GameManager.getOrigin());
             p.setGameMode(GameMode.ADVENTURE);
             p.getInventory().clear();

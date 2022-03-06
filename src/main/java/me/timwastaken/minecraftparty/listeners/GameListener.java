@@ -121,6 +121,9 @@ public class GameListener implements Listener {
             if (mlgRushMinigame.isFighting(event.getPlayer()) && event.getTo().getBlockY() <= mlgRushMinigame.getDeathY()) {
                 mlgRushMinigame.teleportBack(event.getPlayer());
             }
+        } else if (GameManager.getActiveMinigame() instanceof MazeRunner mazeRunnerMinigame) {
+            if (event.getPlayer().getLocation().distance(mazeRunnerMinigame.getExitBlock().getLocation().clone().add(0.5, 0, 0.5)) <= 0.5)
+                mazeRunnerMinigame.onPlayerExitMaze(event.getPlayer());
         }
     }
 
