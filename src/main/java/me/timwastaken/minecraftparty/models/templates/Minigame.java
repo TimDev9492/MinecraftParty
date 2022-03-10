@@ -12,7 +12,9 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.IOException;
 import java.util.*;
@@ -23,10 +25,12 @@ public abstract class Minigame {
     protected List<MinigameFlag> flags;
     private final String gameWorldName;
     protected World gameWorld;
-    private long whenStarted;
+    private long whenStarted = -1;
     private boolean isRunning = false;
+    private boolean hasStarted = false;
     protected Location origin;
     private final ArrayList<Block> placedBlocks;
+    private ArrayList<BukkitRunnable> gameLoops;
 
     private final ArrayList<GameEventListener> gameEventListeners;
 
@@ -36,6 +40,7 @@ public abstract class Minigame {
         this.gameEventListeners = new ArrayList<>();
         this.gameWorldName = type.getWorldName();
         this.placedBlocks = new ArrayList<>();
+        this.gameLoops = new ArrayList<>();
     }
 
     public void addGameEventListeners(GameEventListener... listeners) {
@@ -114,6 +119,7 @@ public abstract class Minigame {
 
     private void startGame() {
         isRunning = true;
+        hasStarted = true;
         whenStarted = System.currentTimeMillis();
         gameEventListeners.forEach(GameEventListener::onGameStart);
     }
@@ -121,6 +127,7 @@ public abstract class Minigame {
     public void endGame() {
         isRunning = false;
         gameEventListeners.forEach(GameEventListener::onGameEnd);
+        gameLoops.forEach(BukkitRunnable::cancel);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -129,6 +136,15 @@ public abstract class Minigame {
                 ScoreboardSystem.refreshScoreboards();
             }
         }.runTaskLater(MinecraftParty.getInstance(), 60L);
+    }
+
+    public void forceStop() {
+        isRunning = false;
+        gameEventListeners.forEach(GameEventListener::onGameEnd);
+        gameLoops.forEach(BukkitRunnable::cancel);
+        closeWorld();
+        GameManager.clearMinigame();
+        ScoreboardSystem.refreshScoreboards();
     }
 
 //    public void abort() {
@@ -149,6 +165,16 @@ public abstract class Minigame {
             p.setHealth(20);
         });
         unloadWorld();
+    }
+
+    public void addGameLoop(BukkitRunnable runnable, long delay, long period) {
+        gameLoops.add(runnable);
+        runnable.runTaskTimer(MinecraftParty.getInstance(), delay, period);
+    }
+
+    public void addTask(BukkitRunnable runnable, long delay) {
+        gameLoops.add(runnable);
+        runnable.runTaskLater(MinecraftParty.getInstance(), delay);
     }
 
     public List<String> getScoreboardList() {
@@ -179,6 +205,10 @@ public abstract class Minigame {
         return isRunning;
     }
 
+    public boolean hasStarted() {
+        return hasStarted;
+    }
+
     public long getWhenStarted() {
         return whenStarted;
     }
@@ -190,5 +220,4 @@ public abstract class Minigame {
     protected void addFlag(MinigameFlag flag) {
         if (!this.flags.contains(flag)) this.flags.add(flag);
     }
-
 }

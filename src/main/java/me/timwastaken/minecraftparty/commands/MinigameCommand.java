@@ -23,8 +23,8 @@ public class MinigameCommand implements TabExecutor {
         } else {
             String operation = args[0];
             if (operation.equals("stop")) {
+                GameManager.forceStopMinigame();
                 NotificationManager.announceStoppingGame(Bukkit.getOnlinePlayers().toArray(new Player[0]));
-                GameManager.stopMinigame();
                 Bukkit.getOnlinePlayers().forEach(p -> p.getInventory().clear());
             } else if (operation.equals("load")) {
                 MinigameType typeToLoad = MinigameType.fromAlias(args[1]);

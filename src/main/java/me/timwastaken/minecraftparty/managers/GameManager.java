@@ -9,6 +9,7 @@ import me.timwastaken.minecraftparty.models.minigames.MazeRunner;
 import me.timwastaken.minecraftparty.models.minigames.MlgRush;
 import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
 import me.timwastaken.minecraftparty.models.minigames.OneInTheChamber;
+import me.timwastaken.minecraftparty.models.minigames.kingofthehill.KingOfTheHill;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.Bukkit;
@@ -85,6 +86,9 @@ public class GameManager {
                 case MAZE_RUNNER -> {
                     activeMinigame = new MazeRunner(players);
                 }
+                case KING_OF_THE_HILLS -> {
+                    activeMinigame = new KingOfTheHill(players);
+                }
                 default -> successful = false;
             }
             if (successful) {
@@ -113,4 +117,7 @@ public class GameManager {
         activeMinigame = null;
     }
 
+    public static void forceStopMinigame() {
+        activeMinigame.forceStop();
+    }
 }

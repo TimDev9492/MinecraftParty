@@ -1,0 +1,10 @@
+reward: 1
+origin:
+  x: 0
+  y: 65
+  z: 0
+world_name: world
+hill_height: 8
+game_time_seconds: 30
+weapon_material: LADDER
+knockback_level: 2

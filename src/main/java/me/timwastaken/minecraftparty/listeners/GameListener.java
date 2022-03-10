@@ -11,6 +11,7 @@ import me.timwastaken.minecraftparty.models.minigames.MazeRunner;
 import me.timwastaken.minecraftparty.models.minigames.MlgRush;
 import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
 import me.timwastaken.minecraftparty.models.minigames.OneInTheChamber;
+import me.timwastaken.minecraftparty.models.minigames.kingofthehill.KingOfTheHill;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,6 +23,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
@@ -124,6 +126,13 @@ public class GameListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if (GameManager.getActiveMinigame() == null) return;
+        if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.FREEZE_PLAYERS_UNTIL_START) && !GameManager.getActiveMinigame().hasStarted()) {
+            Location from = event.getFrom().clone();
+            Location to = event.getTo().clone();
+            from.setY(0);
+            to.setY(0);
+            if (from.distance(to) != 0) event.setCancelled(true);
+        }
         if (GameManager.getActiveMinigame() instanceof MlgRush mlgRushMinigame) {
             if (mlgRushMinigame.isFighting(event.getPlayer()) && event.getTo().getBlockY() <= mlgRushMinigame.getDeathY()) {
                 mlgRushMinigame.teleportBack(event.getPlayer());
@@ -135,6 +144,8 @@ public class GameListener implements Listener {
             exitBlock.setY(0);
             if (playerLoc.distance(exitBlock) <= 0.5)
                 mazeRunnerMinigame.onPlayerExitMaze(event.getPlayer());
+        } else if (GameManager.getActiveMinigame() instanceof KingOfTheHill kingOfTheHillMinigame) {
+            kingOfTheHillMinigame.onPlayerMove(event.getPlayer());
         }
     }
 
