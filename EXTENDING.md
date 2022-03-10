@@ -46,7 +46,7 @@ public enum MinigameType {
 
 ## 3. Add your minigame class
 
-   - Create your java class containing the code of your minigame in `me.timwastaken.minecraftparty.models.minigames` and make it extend one of the classes from `me.timwastaken.minecraftparty.models.templates`
+   - Create your java class containing the code of your minigame in `me.timwastaken.minecraftparty.models.minigames.<insert_your_plugin_alias_without_underscores>` and make it extend one of the classes from `me.timwastaken.minecraftparty.models.templates`
    - Each minigame class has a field `type` which is the `MinigameType` enum value corresponding to your minigame. This type gets passed on to the super class and is important for loading basic attributes, such as the world that you specified.
    - Ech minigame class has a field `flags` which is of type `List<MinigameFlag>`. This list can contain useful flags to add certain functionalities, the flag `MinigameFlag.NO_PVP` disables pvp for example (see enum `MinigameFlag` for more detail). Pass null for no flags.
    - If you want to implement events, such as `onGameStart` which gets called when your game starts, you can implement the `GameEventListener` interface and add the required methods to your class. To register your class as a listener, simply call `super.addGameEventListeners(this);`.
