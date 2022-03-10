@@ -4,7 +4,13 @@ import me.timwastaken.minecraftparty.managers.GameManager;
 import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
-import me.timwastaken.minecraftparty.models.minigames.*;
+import me.timwastaken.minecraftparty.models.minigames.AnvilStorm;
+import me.timwastaken.minecraftparty.models.minigames.Duels;
+import me.timwastaken.minecraftparty.models.minigames.Lasertag;
+import me.timwastaken.minecraftparty.models.minigames.MazeRunner;
+import me.timwastaken.minecraftparty.models.minigames.MlgRush;
+import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
+import me.timwastaken.minecraftparty.models.minigames.OneInTheChamber;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,10 +22,8 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
-import org.bukkit.scoreboard.Score;
 
 import java.util.Arrays;
-import java.util.Locale;
 
 public class GameListener implements Listener {
 
