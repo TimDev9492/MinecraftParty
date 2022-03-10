@@ -193,6 +193,7 @@ public class OneInTheChamber extends Minigame implements GameEventListener {
     public void onPlayerLeave(Player p) {
         players.remove(p);
         points.remove(p);
+        ScoreboardSystem.removePlayerScoreboards(p);
         ScoreboardSystem.refreshScoreboards();
     }
 

@@ -6,6 +6,7 @@ import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.minigames.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
@@ -15,8 +16,10 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.bukkit.scoreboard.Score;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public class GameListener implements Listener {
 
@@ -122,7 +125,11 @@ public class GameListener implements Listener {
                 mlgRushMinigame.teleportBack(event.getPlayer());
             }
         } else if (GameManager.getActiveMinigame() instanceof MazeRunner mazeRunnerMinigame) {
-            if (event.getPlayer().getLocation().distance(mazeRunnerMinigame.getExitBlock().getLocation().clone().add(0.5, 0, 0.5)) <= 0.5)
+            Location playerLoc = event.getTo().clone();
+            Location exitBlock = mazeRunnerMinigame.getExitBlock().getLocation().clone().add(0.5, 0, 0.5);
+            playerLoc.setY(0);
+            exitBlock.setY(0);
+            if (playerLoc.distance(exitBlock) <= 0.5)
                 mazeRunnerMinigame.onPlayerExitMaze(event.getPlayer());
         }
     }
@@ -204,6 +211,7 @@ public class GameListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (GameManager.getActiveMinigame() == null) return;
         ((GameEventListener) GameManager.getActiveMinigame()).onPlayerLeave(event.getPlayer());
+        ScoreboardSystem.removePlayerScoreboards(event.getPlayer());
     }
 
     @EventHandler

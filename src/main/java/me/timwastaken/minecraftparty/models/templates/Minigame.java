@@ -141,6 +141,9 @@ public abstract class Minigame {
         Bukkit.getOnlinePlayers().forEach(p -> {
             p.setFallDistance(0);
             p.teleport(GameManager.getOrigin());
+            p.getActivePotionEffects().forEach(potionEffect -> {
+                p.removePotionEffect(potionEffect.getType());
+            });
             p.setGameMode(GameMode.ADVENTURE);
             p.getInventory().clear();
             p.setHealth(20);

@@ -252,6 +252,7 @@ public class MazeRunner extends Minigame implements GameEventListener {
         p.removePotionEffect(PotionEffectType.INVISIBILITY);
         p.getInventory().clear();
         noCollision.removeEntry(p.getName());
+        ScoreboardSystem.removePlayerScoreboards(p);
     }
 
     @Override
@@ -298,7 +299,7 @@ public class MazeRunner extends Minigame implements GameEventListener {
             scoreboardList.add(ChatColor.YELLOW + "" + ChatColor.ITALIC + "Time remaining: " + ChatColor.GRAY + String.format("%02d:%02d", gameTimeSeconds / 60, gameTimeSeconds % 60));
         }
         for (int i = 1; i <= 3; i++) {
-            scoreboardList.add(ChatColor.GREEN + "" + ChatColor.BOLD + i + ". " + ChatColor.GRAY + (completed.size() >= i ? completed.get(i - 1).getName() + ChatColor.DARK_GRAY + ChatColor.ITALIC + String.format(" %.3fs", timeInMillis.get(completed.get(i - 1).getUniqueId()) / 1000f) : "-"));
+            scoreboardList.add(ChatColor.GREEN + "" + ChatColor.BOLD + i + ". " + ChatColor.GRAY + (completed.size() >= i ? completed.get(i - 1).getName() + ChatColor.DARK_GRAY + String.format(" %.3fs", timeInMillis.get(completed.get(i - 1).getUniqueId()) / 1000f) : "-"));
         }
         return scoreboardList;
     }

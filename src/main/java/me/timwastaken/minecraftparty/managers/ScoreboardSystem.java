@@ -27,6 +27,14 @@ public class ScoreboardSystem {
         playerScoreboards.put(uuid, Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
+    public static void removePlayerScoreboards(Player... players) {
+        Arrays.stream(players).forEach(p -> removePlayerScoreboard(p.getUniqueId()));
+    }
+
+    private static void removePlayerScoreboard(UUID uuid) {
+        playerScoreboards.remove(uuid);
+    }
+
     public static void refreshScoreboard(Player p) {
         p.setScoreboard(getUpdatedScoreboard(p.getUniqueId()));
     }

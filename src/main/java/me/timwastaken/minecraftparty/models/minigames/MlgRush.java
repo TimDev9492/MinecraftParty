@@ -6,12 +6,14 @@ import me.timwastaken.minecraftparty.managers.NotificationManager;
 import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
+import me.timwastaken.minecraftparty.models.other.MinigameUtils;
 import me.timwastaken.minecraftparty.models.templates.InvLayoutBasedMinigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Score;
 
 import java.io.IOException;
 import java.util.*;
@@ -25,7 +27,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
     private final HashMap<UUID, Integer> gamesPlayed;
     private final HashMap<UUID, Integer> playerLives;
 
-    private final UUID[] currentlyFighting;
+    private UUID[] currentlyFighting;
     private Location[] fightSpawns;
     private Location[] bedLocations;
     private Location spectatorSpawn;
@@ -115,6 +117,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
             if (gamesPlayed.keySet().size() > 1)
                 generateNewFightingPlayers();
         }
+        ScoreboardSystem.removePlayerScoreboards(p);
         ScoreboardSystem.refreshScoreboards();
     }
 
@@ -201,34 +204,7 @@ public class MlgRush extends InvLayoutBasedMinigame implements GameEventListener
     }
 
     private void generateNewFightingPlayers() {
-        int minGamesPlayed = -1;
-        int secondMin = -1;
-        for (UUID id : gamesPlayed.keySet()) {
-            if (minGamesPlayed == -1) minGamesPlayed = gamesPlayed.get(id);
-            else if (gamesPlayed.get(id) < minGamesPlayed) {
-                minGamesPlayed = gamesPlayed.get(id);
-            } else if (secondMin == -1 || gamesPlayed.get(id) < secondMin) {
-                secondMin = gamesPlayed.get(id);
-            }
-        }
-        ArrayList<UUID> possiblePlayers = new ArrayList<>();
-        for (UUID id : gamesPlayed.keySet()) {
-            if (gamesPlayed.get(id) == minGamesPlayed) possiblePlayers.add(id);
-        }
-        if (possiblePlayers.size() == 1) {
-            currentlyFighting[0] = possiblePlayers.get(0);
-            possiblePlayers.clear();
-            for (UUID id : gamesPlayed.keySet()) {
-                if (gamesPlayed.get(id) == secondMin) possiblePlayers.add(id);
-            }
-            currentlyFighting[1] = possiblePlayers.get(rnd.nextInt(possiblePlayers.size()));
-        } else {
-            int randomIndex = rnd.nextInt(possiblePlayers.size());
-            currentlyFighting[0] = possiblePlayers.get(randomIndex);
-            possiblePlayers.remove(randomIndex);
-            randomIndex = rnd.nextInt(possiblePlayers.size());
-            currentlyFighting[1] = possiblePlayers.get(randomIndex);
-        }
+        currentlyFighting = MinigameUtils.getNewFightingPair(gamesPlayed);
         gamesPlayed.put(currentlyFighting[0], gamesPlayed.get(currentlyFighting[0]) + 1);
         gamesPlayed.put(currentlyFighting[1], gamesPlayed.get(currentlyFighting[1]) + 1);
         Player p1 = Bukkit.getPlayer(currentlyFighting[0]);
