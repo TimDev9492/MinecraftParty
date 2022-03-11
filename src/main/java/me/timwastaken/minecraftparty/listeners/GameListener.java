@@ -11,6 +11,7 @@ import me.timwastaken.minecraftparty.models.minigames.MazeRunner;
 import me.timwastaken.minecraftparty.models.minigames.MlgRush;
 import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
 import me.timwastaken.minecraftparty.models.minigames.OneInTheChamber;
+import me.timwastaken.minecraftparty.models.minigames.dragonescape.DragonEscape;
 import me.timwastaken.minecraftparty.models.minigames.kingofthehill.KingOfTheHill;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,6 +24,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
@@ -72,6 +74,11 @@ public class GameListener implements Listener {
         } else if (GameManager.getActiveMinigame() instanceof Duels duelsMinigame) {
             if (event.getBlockPlaced().getLocation().getBlockY() > duelsMinigame.getBuildHeight()) {
                 event.setCancelled(true);
+            }
+        } else if (GameManager.getActiveMinigame() instanceof DragonEscape dragonEscapeMinigame) {
+            if (event.getBlockPlaced().getType() == Material.NETHERITE_BLOCK) {
+                event.setCancelled(true);
+                dragonEscapeMinigame.placeRandomModule(event.getBlockPlaced().getLocation());
             }
         }
         if (!event.isCancelled()) GameManager.getActiveMinigame().addPlacedBlock(event.getBlockPlaced());
@@ -253,6 +260,13 @@ public class GameListener implements Listener {
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         if (GameManager.getActiveMinigame() instanceof OneInTheChamber oneInTheChamberMinigame && event.getEntity() instanceof Arrow arrow) {
             arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+        }
+    }
+
+    @EventHandler
+    public void onChunkLoad(ChunkLoadEvent event) {
+        if (GameManager.getActiveMinigame() instanceof DragonEscape dragonEscapeMinigame && (event.getChunk().getX() < -2 || event.getChunk().getX() > 2) && event.getWorld().getName().equals(dragonEscapeMinigame.getWorldName()) && !event.getChunk().isLoaded()) {
+            dragonEscapeMinigame.onChunkGenerate(event);
         }
     }
 

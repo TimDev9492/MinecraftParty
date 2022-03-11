@@ -9,6 +9,7 @@ import me.timwastaken.minecraftparty.models.minigames.MazeRunner;
 import me.timwastaken.minecraftparty.models.minigames.MlgRush;
 import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
 import me.timwastaken.minecraftparty.models.minigames.OneInTheChamber;
+import me.timwastaken.minecraftparty.models.minigames.dragonescape.DragonEscape;
 import me.timwastaken.minecraftparty.models.minigames.kingofthehill.KingOfTheHill;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
@@ -88,6 +89,9 @@ public class GameManager {
                 }
                 case KING_OF_THE_HILLS -> {
                     activeMinigame = new KingOfTheHill(players);
+                }
+                case DRAGON_ESCAPE -> {
+                    activeMinigame = new DragonEscape(players);
                 }
                 default -> successful = false;
             }

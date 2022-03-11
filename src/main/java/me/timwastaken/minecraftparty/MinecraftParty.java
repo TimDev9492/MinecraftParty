@@ -41,6 +41,7 @@ public final class MinecraftParty extends JavaPlugin {
                 try {
                     KitManager.init();
                     InvGuiManager.init();
+                    StructureManager.init();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

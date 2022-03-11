@@ -1,13 +1,22 @@
 package me.timwastaken.minecraftparty.models.other;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
 public class MinigameUtils {
 
     private static Random rnd = new Random();
+
+    public static Team getScoreboardTeam(String name) {
+        Team team;
+        if ((team = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(name)) != null) {
+            team.unregister();
+        }
+        team = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(name);
+        return team;
+    }
 
     public static UUID[] getNewFightingPair(HashMap<UUID, Integer> gamesPlayed) {
         UUID[] playerPair = new UUID[2];

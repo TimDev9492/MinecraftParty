@@ -6,6 +6,7 @@ import me.timwastaken.minecraftparty.managers.ScoreboardSystem;
 import me.timwastaken.minecraftparty.models.enums.MinigameFlag;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import me.timwastaken.minecraftparty.models.interfaces.GameEventListener;
+import me.timwastaken.minecraftparty.models.other.MinigameUtils;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -68,10 +69,7 @@ public class MazeRunner extends Minigame implements GameEventListener {
         gameLoops = new ArrayList<>();
         completed = new ArrayList<>();
         timeInMillis = new HashMap<>();
-        if ((noCollision = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("mcparty_no_col")) != null) {
-            noCollision.unregister();
-        }
-        noCollision = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("mcparty_no_col");
+        noCollision = MinigameUtils.getScoreboardTeam("mcparty_no_col");
         noCollision.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         participants.forEach(p -> noCollision.addEntry(p.getName()));
 
