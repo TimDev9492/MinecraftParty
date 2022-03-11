@@ -4,6 +4,7 @@ origin:
   x: 0
   y: 65
   z: 0
+  yaw: -90
 module_origin:
   x: 0
   y: 64

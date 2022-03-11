@@ -38,4 +38,25 @@ public class NotificationManager {
         }
     }
 
+    public static void announceRedLight(Player... players) {
+        for (Player player : players) {
+            player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.5f);
+            player.sendTitle(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Red Light", "", 0, 40, 20);
+        }
+    }
+
+    public static void announceYellowLight(Player... players) {
+        for (Player player : players) {
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1f, 0.5f);
+            player.sendTitle(ChatColor.YELLOW + "" + ChatColor.BOLD + "Turning Around...", "", 0, 40, 20);
+        }
+    }
+
+    public static void announceGreenLight(Player... players) {
+        for (Player player : players) {
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1f, 2f);
+            player.sendTitle(ChatColor.GREEN + "" + ChatColor.BOLD + "Green Light", "", 0, 40, 20);
+        }
+    }
+
 }

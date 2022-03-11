@@ -24,7 +24,8 @@ public enum MinigameType {
     ONE_IN_THE_CHAMBER(ChatColor.GOLD + "" + ChatColor.BOLD + "One In The Chamber", "one_in_the_chamber"),
     MAZE_RUNNER(ChatColor.GOLD + "" + ChatColor.BOLD + "Maze Runner", "maze_runner"),
     KING_OF_THE_HILLS(ChatColor.GOLD + "" + ChatColor.BOLD + "King Of The Hill", "king_of_the_hill"),
-    DRAGON_ESCAPE(ChatColor.GOLD + "" + ChatColor.BOLD + "Dragon Escape", "dragon_escape");
+    DRAGON_ESCAPE(ChatColor.GOLD + "" + ChatColor.BOLD + "Dragon Escape", "dragon_escape"),
+    RED_LIGHT_GREEN_LIGHT(ChatColor.GOLD + "" + ChatColor.BOLD + "Red Light Green Light", "red_light_green_light");
 
     private final String displayName;
     private final String alias;

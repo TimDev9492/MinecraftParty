@@ -11,6 +11,7 @@ import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,6 +31,7 @@ public abstract class Minigame {
     private boolean hasStarted = false;
     protected Location origin;
     private final ArrayList<Block> placedBlocks;
+    private final ArrayList<Entity> spawnedEntities;
     private ArrayList<BukkitRunnable> gameLoops;
 
     private final ArrayList<GameEventListener> gameEventListeners;
@@ -40,6 +42,7 @@ public abstract class Minigame {
         this.gameEventListeners = new ArrayList<>();
         this.gameWorldName = type.getWorldName();
         this.placedBlocks = new ArrayList<>();
+        this.spawnedEntities = new ArrayList<>();
         this.gameLoops = new ArrayList<>();
     }
 
@@ -70,7 +73,7 @@ public abstract class Minigame {
 
     public void unloadWorld() {
         if (!gameWorldName.equals(GameManager.getDefaultWorldName()))
-            Bukkit.getServer().unloadWorld(gameWorld, true);
+            Bukkit.getServer().unloadWorld(gameWorld, false);
     }
 
     public void addPlacedBlock(Block b) {
@@ -91,6 +94,7 @@ public abstract class Minigame {
             placedBlocks.get(i).setType(Material.AIR);
             placedBlocks.remove(i);
         }
+        spawnedEntities.forEach(Entity::remove);
     }
 
     public void startCountdown() {
@@ -219,5 +223,13 @@ public abstract class Minigame {
 
     protected void addFlag(MinigameFlag flag) {
         if (!this.flags.contains(flag)) this.flags.add(flag);
+    }
+
+    protected boolean isSpawnedEntity(Entity entity) {
+        return spawnedEntities.contains(entity);
+    }
+
+    public void addSpawnedEntity(Entity entity) {
+        spawnedEntities.add(entity);
     }
 }

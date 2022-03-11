@@ -67,6 +67,7 @@ public class DragonEscape extends Minigame implements GameEventListener {
                 getConfig().getInt("module_size.y"),
                 getConfig().getInt("module_size.z")
         );
+        int yaw = getConfig().getInt("origin.yaw");
         // generate modules in spawn chunks
         for (int chunkX = -2; chunkX <= 2; chunkX++) {
             generateChunk(gameWorld.getChunkAt(chunkX, moduleOrigin.getChunk().getZ()));
@@ -75,7 +76,7 @@ public class DragonEscape extends Minigame implements GameEventListener {
         grayedOut = MinigameUtils.getScoreboardTeam("mcparty_grayed_out");
         grayedOut.setCanSeeFriendlyInvisibles(true);
         Location spawn = origin.clone();
-        spawn.setYaw(-90);
+        spawn.setYaw(yaw);
         participants.forEach(p -> {
             grayedOut.addEntry(p.getName());
 //            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));

@@ -11,6 +11,7 @@ import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
 import me.timwastaken.minecraftparty.models.minigames.OneInTheChamber;
 import me.timwastaken.minecraftparty.models.minigames.dragonescape.DragonEscape;
 import me.timwastaken.minecraftparty.models.minigames.kingofthehill.KingOfTheHill;
+import me.timwastaken.minecraftparty.models.minigames.redlightgreenlight.RedLightGreenLight;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
 import me.timwastaken.minecraftparty.models.enums.MinigameType;
 import org.bukkit.Bukkit;
@@ -92,6 +93,9 @@ public class GameManager {
                 }
                 case DRAGON_ESCAPE -> {
                     activeMinigame = new DragonEscape(players);
+                }
+                case RED_LIGHT_GREEN_LIGHT -> {
+                    activeMinigame = new RedLightGreenLight(players);
                 }
                 default -> successful = false;
             }

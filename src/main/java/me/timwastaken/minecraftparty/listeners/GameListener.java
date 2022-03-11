@@ -13,6 +13,7 @@ import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
 import me.timwastaken.minecraftparty.models.minigames.OneInTheChamber;
 import me.timwastaken.minecraftparty.models.minigames.dragonescape.DragonEscape;
 import me.timwastaken.minecraftparty.models.minigames.kingofthehill.KingOfTheHill;
+import me.timwastaken.minecraftparty.models.minigames.redlightgreenlight.RedLightGreenLight;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,7 +26,7 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.util.Vector;
+import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.Arrays;
 
@@ -33,9 +34,21 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
         if (GameManager.getActiveMinigame() instanceof Lasertag lasertagMinigame && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
             if (event.getItem() != null && event.getItem().getType() == lasertagMinigame.getGunMaterial()) {
                 lasertagMinigame.onPlayerShootGun(event.getPlayer());
+            }
+        } else if (GameManager.getActiveMinigame() instanceof RedLightGreenLight redLightGreenLightMinigame) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if (event.getClickedBlock().getType() == Material.STONE_BUTTON) {
+                    redLightGreenLightMinigame.onPlayerPickupStone(event);
+                }
+            } else if ((event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) && event.getItem() != null) {
+                if (event.getItem().getType() == Material.STONE_BUTTON && event.getPlayer().getCooldown(Material.STONE_BUTTON) == 0) {
+                    event.getPlayer().dropItem(false);
+                    event.getPlayer().updateInventory();
+                }
             }
         }
     }
@@ -153,6 +166,8 @@ public class GameListener implements Listener {
                 mazeRunnerMinigame.onPlayerExitMaze(event.getPlayer());
         } else if (GameManager.getActiveMinigame() instanceof KingOfTheHill kingOfTheHillMinigame) {
             kingOfTheHillMinigame.onPlayerMove(event.getPlayer());
+        } else if (GameManager.getActiveMinigame() instanceof RedLightGreenLight redLightGreenLightMinigame) {
+            redLightGreenLightMinigame.onPlayerMove(event);
         }
     }
 
@@ -268,6 +283,25 @@ public class GameListener implements Listener {
         if (GameManager.getActiveMinigame() instanceof DragonEscape dragonEscapeMinigame && (event.getChunk().getX() < -2 || event.getChunk().getX() > 2) && event.getWorld().getName().equals(dragonEscapeMinigame.getWorldName()) && !event.getChunk().isLoaded()) {
             dragonEscapeMinigame.onChunkGenerate(event);
         }
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        if (GameManager.getActiveMinigame() instanceof RedLightGreenLight redLightGreenLightMinigame && event.getItemDrop().getItemStack().getType() == Material.STONE_BUTTON) {
+            redLightGreenLightMinigame.onPlayerThrowStone(event);
+        }
+    }
+
+    @EventHandler
+    public void onEntityPickupItem(EntityPickupItemEvent event) {
+        if (GameManager.getActiveMinigame() instanceof RedLightGreenLight redLightGreenLightMinigame && event.getEntity() instanceof Player) {
+            if (event.getItem().getItemStack().getType() == Material.STONE_BUTTON) redLightGreenLightMinigame.onPlayerPickupStone(event);
+        }
+    }
+
+    @EventHandler
+    public void onEntitySpawn(EntitySpawnEvent event) {
+        if (GameManager.getActiveMinigame() != null) GameManager.getActiveMinigame().addSpawnedEntity(event.getEntity());
     }
 
 }

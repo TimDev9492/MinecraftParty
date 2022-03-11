@@ -1,0 +1,32 @@
+reward: 1
+origin:
+  x: -50
+  y: 65
+  z: 0
+  yaw: -90
+world_name: red_light_green_light
+finish_line_x: 38
+glass_wall:
+  x1: -41
+  y1: 65
+  z1: -20
+  x2: -41
+  y2: 74
+  z2: 20
+field_area:
+  x1: -40
+  y1: 65
+  z1: -19
+  x2: 37
+  y2: 65
+  z2: 19
+stone_density: 0.002
+green_phase:
+  min: 20
+  max: 100
+yellow_phase:
+  min: 10
+  max: 100
+red_phase:
+  min: 60
+  max: 100
