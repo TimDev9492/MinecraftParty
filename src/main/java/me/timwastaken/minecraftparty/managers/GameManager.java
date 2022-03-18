@@ -10,6 +10,7 @@ import me.timwastaken.minecraftparty.models.minigames.MlgRush;
 import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
 import me.timwastaken.minecraftparty.models.minigames.OneInTheChamber;
 import me.timwastaken.minecraftparty.models.minigames.dragonescape.DragonEscape;
+import me.timwastaken.minecraftparty.models.minigames.hotpotato.HotPotato;
 import me.timwastaken.minecraftparty.models.minigames.kingofthehill.KingOfTheHill;
 import me.timwastaken.minecraftparty.models.minigames.redlightgreenlight.RedLightGreenLight;
 import me.timwastaken.minecraftparty.models.templates.Minigame;
@@ -96,6 +97,9 @@ public class GameManager {
                 }
                 case RED_LIGHT_GREEN_LIGHT -> {
                     activeMinigame = new RedLightGreenLight(players);
+                }
+                case HOT_POTATO -> {
+                    activeMinigame = new HotPotato(players);
                 }
                 default -> successful = false;
             }

@@ -32,7 +32,8 @@ public abstract class Minigame {
     protected Location origin;
     private final ArrayList<Block> placedBlocks;
     private final ArrayList<Entity> spawnedEntities;
-    private ArrayList<BukkitRunnable> gameLoops;
+    private final ArrayList<BukkitRunnable> gameLoops;
+    protected final Random rnd;
 
     private final ArrayList<GameEventListener> gameEventListeners;
 
@@ -44,6 +45,7 @@ public abstract class Minigame {
         this.placedBlocks = new ArrayList<>();
         this.spawnedEntities = new ArrayList<>();
         this.gameLoops = new ArrayList<>();
+        this.rnd = new Random();
     }
 
     public void addGameEventListeners(GameEventListener... listeners) {
@@ -99,14 +101,15 @@ public abstract class Minigame {
 
     public void startCountdown() {
         addGameLoop(new BukkitRunnable() {
-            int seconds = 5;
+            int seconds = type.getCountdown();
 
             @Override
             public void run() {
                 if (seconds > 0) {
                     Bukkit.getOnlinePlayers().forEach(player -> {
                         player.sendTitle(type.getDisplayName(), ChatColor.GRAY + "Starting in " + seconds + " seconds", 0, 21, 0);
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 0.5f);
+                        if (seconds % 5 == 0 || seconds < 5)
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 0.5f);
                     });
                 } else {
                     Bukkit.getOnlinePlayers().forEach(player -> {

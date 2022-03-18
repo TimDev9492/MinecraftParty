@@ -25,7 +25,8 @@ public enum MinigameType {
     MAZE_RUNNER(ChatColor.GOLD + "" + ChatColor.BOLD + "Maze Runner", "maze_runner"),
     KING_OF_THE_HILLS(ChatColor.GOLD + "" + ChatColor.BOLD + "King Of The Hill", "king_of_the_hill"),
     DRAGON_ESCAPE(ChatColor.GOLD + "" + ChatColor.BOLD + "Dragon Escape", "dragon_escape"),
-    RED_LIGHT_GREEN_LIGHT(ChatColor.GOLD + "" + ChatColor.BOLD + "Red Light Green Light", "red_light_green_light");
+    RED_LIGHT_GREEN_LIGHT(ChatColor.GOLD + "" + ChatColor.BOLD + "Red Light Green Light", "red_light_green_light"),
+    HOT_POTATO(ChatColor.GOLD + "" + ChatColor.BOLD + "Hot Potato", "hot_potato");
 
     private final String displayName;
     private final String alias;
@@ -34,6 +35,7 @@ public enum MinigameType {
     private String worldName;
     private Vector origin;
     private int reward;
+    private int countdown;
 
     MinigameType(String displayName, String alias) {
         this.displayName = displayName;
@@ -77,6 +79,11 @@ public enum MinigameType {
                 typeConfig.getInt("origin.z") + 0.5
         );
         this.reward = typeConfig.getInt("reward");
+        this.countdown = typeConfig.getInt("countdown", 5);
+    }
+
+    public int getCountdown() {
+        return countdown;
     }
 
 }

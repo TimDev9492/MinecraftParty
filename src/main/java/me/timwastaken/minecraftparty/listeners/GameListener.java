@@ -12,6 +12,7 @@ import me.timwastaken.minecraftparty.models.minigames.MlgRush;
 import me.timwastaken.minecraftparty.models.minigames.MusicalChairs;
 import me.timwastaken.minecraftparty.models.minigames.OneInTheChamber;
 import me.timwastaken.minecraftparty.models.minigames.dragonescape.DragonEscape;
+import me.timwastaken.minecraftparty.models.minigames.hotpotato.HotPotato;
 import me.timwastaken.minecraftparty.models.minigames.kingofthehill.KingOfTheHill;
 import me.timwastaken.minecraftparty.models.minigames.redlightgreenlight.RedLightGreenLight;
 import org.bukkit.Bukkit;
@@ -34,6 +35,9 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (GameManager.getActiveMinigame() != null) {
+            if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_BLOCK_INTERACTION) && event.getClickedBlock() != null) event.setCancelled(true);
+        }
         if (event.getHand() == EquipmentSlot.OFF_HAND) return;
         if (GameManager.getActiveMinigame() instanceof Lasertag lasertagMinigame && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
             if (event.getItem() != null && event.getItem().getType() == lasertagMinigame.getGunMaterial()) {
@@ -216,6 +220,8 @@ public class GameListener implements Listener {
                 event.setDamage(0);
                 duelsMinigame.onPlayerKill(damager, p);
             }
+        } else if (GameManager.getActiveMinigame() instanceof HotPotato hotPotatoMinigame && event.getEntity() instanceof Player takeHit && event.getDamager() instanceof Player hit) {
+            hotPotatoMinigame.onPlayerHitPlayer(hit, takeHit);
         }
     }
 

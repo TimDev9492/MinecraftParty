@@ -1,7 +1,9 @@
 package me.timwastaken.minecraftparty.models.other;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -49,6 +51,13 @@ public class MinigameUtils {
             playerPair[1] = possiblePlayers.get(randomIndex);
         }
         return playerPair;
+    }
+
+    public static Vector uniformCircleDistribution(Vector center, double radius) {
+        double scalarRad = Math.sqrt(Math.random());
+        double angle = Math.random() * 2 * Math.PI;
+        Vector circleOffset = new Vector(Math.cos(angle) * radius, 0, Math.sin(angle) * radius).multiply(scalarRad);
+        return center.clone().add(circleOffset);
     }
 
 }

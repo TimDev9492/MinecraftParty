@@ -1,0 +1,17 @@
+countdown: 10
+world_name: hot_potato
+reward: 1
+origin:
+  x: 0
+  y: 90
+  z: 0
+spawn_radius: 30
+allowed_spawning_materials:
+  - ROOTED_DIRT
+  - COARSE_DIRT
+  - DIRT
+  - LIGHT_GRAY_CONCRETE
+  - TUFF
+potato_phase_ticks: 200
+potato_speed_level: 2
+game_time_seconds: 120
