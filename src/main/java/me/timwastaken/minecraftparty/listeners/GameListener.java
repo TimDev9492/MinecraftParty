@@ -24,10 +24,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 
 import java.util.Arrays;
 
@@ -293,6 +296,8 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
+        if (GameManager.getActiveMinigame() == null) return;
+        if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_INVENTORY_CHANGE)) event.setCancelled(true);
         if (GameManager.getActiveMinigame() instanceof RedLightGreenLight redLightGreenLightMinigame && event.getItemDrop().getItemStack().getType() == Material.STONE_BUTTON) {
             redLightGreenLightMinigame.onPlayerThrowStone(event);
         }
@@ -308,6 +313,12 @@ public class GameListener implements Listener {
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {
         if (GameManager.getActiveMinigame() != null) GameManager.getActiveMinigame().addSpawnedEntity(event.getEntity());
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (GameManager.getActiveMinigame() == null) return;
+        if (GameManager.getActiveMinigame().hasFlag(MinigameFlag.NO_INVENTORY_CHANGE)) event.setCancelled(true);
     }
 
 }

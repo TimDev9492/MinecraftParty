@@ -41,7 +41,12 @@ public class HotPotato extends Minigame implements GameEventListener {
     private BossBar bossBar;
 
     public HotPotato(Player... players) throws IOException {
-        super(type, List.of(MinigameFlag.ZERO_DAMAGE, MinigameFlag.NO_FALL_DAMAGE, MinigameFlag.NO_BLOCK_BREAKING, MinigameFlag.NO_BLOCK_PLACEMENT, MinigameFlag.NO_BLOCK_INTERACTION));
+        super(type, List.of(MinigameFlag.ZERO_DAMAGE,
+                MinigameFlag.NO_FALL_DAMAGE,
+                MinigameFlag.NO_BLOCK_BREAKING,
+                MinigameFlag.NO_BLOCK_PLACEMENT,
+                MinigameFlag.NO_BLOCK_INTERACTION,
+                MinigameFlag.NO_INVENTORY_CHANGE));
         super.addGameEventListeners(this);
         participants = new ArrayList<>(Arrays.asList(players));
         potato = new ItemStack(Material.BAKED_POTATO);

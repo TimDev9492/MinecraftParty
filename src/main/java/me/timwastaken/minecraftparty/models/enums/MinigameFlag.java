@@ -14,6 +14,7 @@ public enum MinigameFlag {
     NO_BLOCK_DROPS,             // disables items from dropping when breaking blocks
     NO_MAP_BREAKING,            // lets player only destroy blocks that were placed by players
     FREEZE_PLAYERS_UNTIL_START, // freezes players to their location until the game starts
-    NO_BLOCK_INTERACTION        // disables block interactions (open/close doors, open furnace gui, etc.)
+    NO_BLOCK_INTERACTION,       // disables block interactions (open/close doors, open furnace gui, etc.)
+    NO_INVENTORY_CHANGE         // prevents players from dropping or rearranging items in their inventory
 
 }
