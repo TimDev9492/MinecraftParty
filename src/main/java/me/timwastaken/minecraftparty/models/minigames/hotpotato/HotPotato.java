@@ -53,7 +53,9 @@ public class HotPotato extends Minigame implements GameEventListener {
     }
 
     private void killHotPlayers() {
-        hotPlayers.forEach(this::removePlayer);
+        for (int i = hotPlayers.size() - 1; i >= 0; i--) {
+            removePlayer(hotPlayers.get(i));
+        }
     }
 
     private void makePlayersHot() {
@@ -165,12 +167,18 @@ public class HotPotato extends Minigame implements GameEventListener {
 
     @Override
     public void onPlayerLeave(Player p) {
-
+        hotPlayers.remove(p);
+        participants.remove(p);
+        p.getInventory().clear();
+        p.removePotionEffect(PotionEffectType.SPEED);
+        checkGameEnd();
     }
 
     @Override
     public void onPlayerJoin(Player p) {
-
+        p.setGameMode(GameMode.SPECTATOR);
+        p.teleport(origin);
+        p.getInventory().clear();
     }
 
     private Location newPlayerSpawn() {
