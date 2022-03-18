@@ -98,7 +98,7 @@ public abstract class Minigame {
     }
 
     public void startCountdown() {
-        new BukkitRunnable() {
+        addGameLoop(new BukkitRunnable() {
             int seconds = 5;
 
             @Override
@@ -118,7 +118,7 @@ public abstract class Minigame {
                 }
                 seconds--;
             }
-        }.runTaskTimer(MinecraftParty.getInstance(), 0L, 20L);
+        }, 0L, 20L);
     }
 
     private void startGame() {

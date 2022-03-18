@@ -28,7 +28,7 @@ spectator_spawn:
   z: 0
   pitch: 90
   yaw: 0
-lives: 2
+lives: 3
 reset_depth: 8
 bed_protection_radius: 2.5
 build_height: 4

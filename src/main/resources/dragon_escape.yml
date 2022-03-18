@@ -13,3 +13,4 @@ module_size:
   x: 16
   y: 16
   z: 32
+dragon_start_speed: 0.1

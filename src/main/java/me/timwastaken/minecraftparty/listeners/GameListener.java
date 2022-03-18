@@ -44,7 +44,7 @@ public class GameListener implements Listener {
                 if (event.getClickedBlock().getType() == Material.STONE_BUTTON) {
                     redLightGreenLightMinigame.onPlayerPickupStone(event);
                 }
-            } else if ((event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) && event.getItem() != null) {
+            } else if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getItem() != null) {
                 if (event.getItem().getType() == Material.STONE_BUTTON && event.getPlayer().getCooldown(Material.STONE_BUTTON) == 0) {
                     event.getPlayer().dropItem(false);
                     event.getPlayer().updateInventory();
@@ -166,7 +166,7 @@ public class GameListener implements Listener {
                 mazeRunnerMinigame.onPlayerExitMaze(event.getPlayer());
         } else if (GameManager.getActiveMinigame() instanceof KingOfTheHill kingOfTheHillMinigame) {
             kingOfTheHillMinigame.onPlayerMove(event.getPlayer());
-        } else if (GameManager.getActiveMinigame() instanceof RedLightGreenLight redLightGreenLightMinigame) {
+        } else if (GameManager.getActiveMinigame() instanceof RedLightGreenLight redLightGreenLightMinigame && redLightGreenLightMinigame.hasStarted()) {
             redLightGreenLightMinigame.onPlayerMove(event);
         }
     }
@@ -280,7 +280,7 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        if (GameManager.getActiveMinigame() instanceof DragonEscape dragonEscapeMinigame && (event.getChunk().getX() < -2 || event.getChunk().getX() > 2) && event.getWorld().getName().equals(dragonEscapeMinigame.getWorldName()) && !event.getChunk().isLoaded()) {
+        if (GameManager.getActiveMinigame() instanceof DragonEscape dragonEscapeMinigame && (event.getChunk().getX() < -2 || event.getChunk().getX() > 2) && event.getWorld().getName().equals(dragonEscapeMinigame.getWorldName())) {
             dragonEscapeMinigame.onChunkGenerate(event);
         }
     }

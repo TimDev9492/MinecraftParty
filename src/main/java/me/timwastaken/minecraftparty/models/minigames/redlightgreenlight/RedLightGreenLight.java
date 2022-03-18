@@ -120,6 +120,7 @@ public class RedLightGreenLight extends Minigame implements GameEventListener {
     }
 
     private void finishPlayer(Player p) {
+        p.getInventory().remove(Material.STONE_BUTTON);
         vulnerable.remove(p);
         winners.add(p.getUniqueId());
         gameWorld.getPlayers().forEach(inWorld -> {
@@ -131,7 +132,7 @@ public class RedLightGreenLight extends Minigame implements GameEventListener {
     }
 
     private void checkGameEnd() {
-        if (participants.size() - winners.size() <= 1) {
+        if (participants.size() - winners.size() <= 1 && isRunning()) {
             NotificationManager.announceGameWinners(Bukkit.getPlayer(winners.iterator().next()));
             endGame();
         }
@@ -261,6 +262,7 @@ public class RedLightGreenLight extends Minigame implements GameEventListener {
 
     public void onPlayerPickupStone(PlayerInteractEvent event) {
         event.setCancelled(true);
+        if (winners.contains(event.getPlayer().getUniqueId())) return;
         event.getClickedBlock().setType(Material.AIR);
         event.getPlayer().getInventory().addItem(stone);
         event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ITEM_PICKUP, 1f, 1f);
