@@ -34,10 +34,9 @@ public class HotPotato extends Minigame implements GameEventListener {
     private List<Material> allowedSpawningMaterials;
     private int potatoPhaseTicks;
     private int potatoSpeedLevel;
-    private int gameTimeSeconds;
 
     private final List<Player> participants;
-    private List<Player> hotPlayers;
+    private final List<Player> hotPlayers;
     private final ItemStack potato;
     private BossBar bossBar;
 
@@ -158,11 +157,8 @@ public class HotPotato extends Minigame implements GameEventListener {
         allowedSpawningMaterials = getConfig().getStringList("allowed_spawning_materials").stream().map(Material::valueOf).toList();
         potatoPhaseTicks = getConfig().getInt("potato_phase_ticks");
         potatoSpeedLevel = getConfig().getInt("potato_speed_level");
-        gameTimeSeconds = getConfig().getInt("game_time_seconds");
 
-        participants.forEach(p -> {
-            p.teleport(newPlayerSpawn());
-        });
+        participants.forEach(p -> p.teleport(newPlayerSpawn()));
     }
 
     @Override

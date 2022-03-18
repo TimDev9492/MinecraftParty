@@ -14,4 +14,3 @@ allowed_spawning_materials:
   - TUFF
 potato_phase_ticks: 200
 potato_speed_level: 2
-game_time_seconds: 120
